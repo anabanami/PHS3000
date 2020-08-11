@@ -1,4 +1,4 @@
-# PHS3000 -Introduction to Python -part B
+# PHS3000 -Introduction to Python -
 # Using a pendulum to measure the gravitational constant
 # Ana Fabela, 03/08/2020
 

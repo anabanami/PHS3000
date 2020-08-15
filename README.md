@@ -2,12 +2,12 @@
 ## -Physics-
 Laboratory: semester 2 third year (2020) 
 
-####LABWORK DURING LOCKDOWN:
+#### LABWORK DURING LOCKDOWN:
 #### 4.04 REMOTE CONTROL BETA-RAY SPECTROMETER
-    [X]BOOKING
-        THURSDAY 10:00-16:00
-    [ ] logbook
-    [ ] report
+       [x]THURSDAY (6/08)10:00-16:00
+        []SUNDAY (16/08) 11:00-17:00
+         [] logbook
+         [] report
 
 #### 1.06 Rubidium hyperfine spectroscopy
     [ ]BOOKING

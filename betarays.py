@@ -19,7 +19,7 @@ meV = 1e-3 * eV
 keV = 1e6 * eV
 angstrom = 1e-10 # [m]
 
-
+#calibration peak (K)
 T_K = 624.21 * keV
 
 w = T + mass_e * c**2

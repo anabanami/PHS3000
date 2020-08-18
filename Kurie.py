@@ -93,3 +93,21 @@ spa.savefig('Kurie_linear_plot_fake.png')
 plt.show()
 
 ############################# Linear fit #############################
+##########################Linear fit residuals########################
+# linear_residuals = A_lin_fit - A_lin # linear residuals (linear best fit - linearised data)
+
+# plt.figure(4)
+# # plot
+# plt.errorbar(
+#             time_lin, linear_residuals, xerr=0, yerr=u_A_lin,
+#             marker="o", linestyle="None",
+#             label="Residuals (linear fit-data)"
+# )
+# plt.plot([time[0], time[-1]], [0,0], color="k")
+# plt.title("Figure 4: Residuals of linear fit of silver decay data")
+# plt.xlabel("t [s]")
+# plt.ylabel("ln(A) [arb]")
+# plt.legend()
+# spa.savefig('linear_residuals_silver_decay_data.png')
+# plt.show()
+# ##########################Linear fit residuals########################

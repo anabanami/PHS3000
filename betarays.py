@@ -108,11 +108,12 @@ p_0_rel = np.sqrt(theory_w_0_rel**2 - 1) / (mass_e * c)
 
 # # defining the theoretical count (Kuriefunction)
 K_1 = 1 # ?
-S_0 = 1
+Sn = 1
 def n(p_rel):
     w_rel = np.sqrt(p_rel**2 + 1) # relativistic energy units
-    n = K_1 * S_0* (w_rel * interpolated_fermi(p_rel) / p_rel) * p_rel**2 * (theory_w_0_rel - w_rel)**2
+    n = K_1 * Sn * (w_rel * interpolated_fermi(p_rel) / p_rel) * p_rel**2 * (theory_w_0_rel - w_rel)**2
     return n, w_rel
+
 
 n_p_rel, w_rel = n(p_rel[:22]) #  call and unpack n(p)
 
@@ -161,9 +162,10 @@ u_x = u_p_rel[8:18]
 # uncertainty in interpolated fermi
 u_interpolated_fermi = np.sqrt((u_p_rel[8:18] / p_rel[8:18])**2 + (u_x / x)**2) * interpolated_fermi(p_rel[8:18])
 
-#this clips negative counts which are non physical
+# this clips negative counts which are non physical
 corrected_count = corrected_count.clip(min=0)
 
+# LINEARISED KURIE 
 y = np.sqrt(corrected_count[8:18] / (p_rel[8:18] * x * interpolated_fermi(p_rel[8:18])))
 # regularising y to avoid zero u_y 
 y_regularised = np.sqrt(corrected_count[8:18].clip(min=1) / (p_rel[8:18] * x * interpolated_fermi(p_rel[8:18])))
@@ -263,6 +265,7 @@ u_opt_w_0 = np.sqrt((u_opt_K_2 / opt_K_2)**2 + (u_opt_intercept / opt_intercept)
 
 print(f"EXPECTED RESULT {theory_w_0_rel = }")
 print(f"post-optimisation result  {opt_w_0 = } ± {u_opt_w_0}\n")
+print(f"non-relativistic w_0 = {opt_w_0 * rel_energy_unit / MeV} ± {u_opt_w_0 * rel_energy_unit / MeV}\n")
 
 # # OPTIMISED FIT PLOT
 # plt.figure()
@@ -290,7 +293,7 @@ print(f"post-optimisation result  {opt_w_0 = } ± {u_opt_w_0}\n")
 # plt.show()
 
 ##########################optimised fit residuals########################
-optimised_residuals = optimised_fit - y
+# optimised_residuals = optimised_fit - y
 # # plot
 # plt.figure()
 # plt.errorbar(
@@ -306,3 +309,20 @@ optimised_residuals = optimised_fit - y
 # spa.savefig('OPTIMISED_linear_residuals_Kurie_linear_data.png')
 # plt.show()
 # # ##########################optimised fit residuals########################
+
+# Shape factor investigation
+
+# Shape factor
+def Sn(w_0_rel, w_rel):
+    return w_rel**2 - 1 + (w_0_rel - w_rel)**2
+
+def n2(p_rel, w_0_rel):
+    w_rel = np.sqrt(p_rel**2 + 1) # relativistic energy units
+    n = K_1 * Sn(w_0_rel, w_rel) * (w_rel * interpolated_fermi(p_rel) / p_rel) * p_rel**2 * (w_0_rel - w_rel)**2
+    return n, w_rel
+
+# RHS of linearised Kurie function
+K_2 = 1
+def RHS_kurie(w_0_rel, w_rel):
+        return K_2 * np.sqrt(Sn(w_0_rel, w_rel)) * (w_0_rel - w_rel)
+

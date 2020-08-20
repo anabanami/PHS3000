@@ -7,7 +7,7 @@ Laboratory: semester 2 third year (2020)
        [x]THURSDAY (6/08)10:00-16:00
         [-]SUNDAY (16/08) 11:00-17:00 void
         [x]TUESDAY (18/08) 10:00-17:00
-         [] logbook
+         [x] logbook
          [] report
 
 #### 1.06 Rubidium hyperfine spectroscopy

@@ -328,9 +328,9 @@ print(f"non-relativistic T = {opt_T_SI:.3f} ± {u_opt_T_SI:.3f} MeV")
 
 diff = 0.512 - opt_T_SI
 how_many_sigmas = diff / u_opt_T_SI
-print(f"{diff = :.3f}")
+print(f"difference {diff:.3f}")
 # print(f"{opt_T_SI}")
-print(f"{how_many_sigmas = :.3f}")
+print(f" how many sigmas away from the true result are we? {how_many_sigmas:.3f}")
 
 ##############################################################################
 ##############################################################################

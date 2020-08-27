@@ -50,7 +50,7 @@ background_count = []
 for row in background_count_data:
     background_count.append(row[5])
 avg_background_count = np.mean(background_count)
-# print(f"We want to substract thie background count from our data {avg_background_count=}")
+# print(f"We want to subtract the background count from our data {avg_background_count=}")
 # calculating fractional uncertainty in total background count (delta_t = 24 min)
 total_background = np.sum(background_count)
 u_avg_background_count = np.sqrt(total_background) / 4
@@ -63,18 +63,34 @@ u_corrected_count = np.sqrt(count + u_avg_background_count**2)
 # Finding constant of proportionality in p = kI
 # calibration peak (K) index of k peak is i=20
 T_K = 624.21 * keV / rel_energy_unit
-k = np.sqrt((T_K + 1)**2 - 1) / lens_current[20]
+k = np.sqrt((T_K + 1)**2 - 1) / lens_current[20] 
 # print(f"{k=}")
-u_k = k * (0.0005 / lens_current[20]) 
-# print(f"absolute uncertainty: {u_k = }")
+# u_k = k * (0.0005 / lens_current[20]) # erroneous uncertainty 
+
+
+##############################################################################
+##############################################################################
+
+# defining an appropriate uncertainty for our k peak
+u_I_k = 0.1 / 2
+u_k = k * (u_I_k / lens_current[20])
+print(f"absolute uncertainty in I_k =  {u_I_k:.3f}")
+print(f"absolute uncertainty in k =  {u_k:.3f}")
+print(f"fractional uncertainty in k =  {u_k / k:.3f}\n")
+
 # print(f"fractional uncertainty: {(u_k / k) = }\n")
 
 # The momentum spectrum
 lens_current = np.array(lens_current)
 p_rel = k * lens_current
-u_p_rel = p_rel * np.sqrt((u_k / k)**2 + (0.0005 / lens_current)**2)
+# uncertainty in p including uncertainty in spectrometer resolution taken to be 0.03
+u_p_rel = p_rel * np.sqrt((u_k / k)**2 + (0.0005 / lens_current)**2 + (0.03)**2)
 # print(f"absolute uncertainty u(p_rel):\n {u_p_rel}")
 # print(f"fractional uncertainty u(p_rel) / p_rel:\n {(u_p_rel / p_rel)}")
+
+##############################################################################
+##############################################################################
+
 
 # plot
 plt.figure()
@@ -88,7 +104,7 @@ plt.xlabel("p [mc]")
 plt.ylabel("n(p)")
 plt.legend()
 spa.savefig('count_vs_momentum_no_background_error.png')
-plt.show()
+# plt.show()
 
 ####################### KURIE/Fermi PLOT #####################################
 
@@ -99,12 +115,22 @@ fermi_data = spa.betaray.modified_fermi_function_data
 interpolated_fermi = interp1d(fermi_data[:,0], fermi_data[:,1], kind='cubic')
 
 ######################## THEORETICAL ###############################
+
+##############################################################################
+##############################################################################
 # Desintegration energy
-# Cs-137 disintegrates by beta minus emission to the ground state of Ba-137 (5,6 %)
-theory_w_0 = 1.174 * MeV
-theory_w_0_rel = theory_w_0 / rel_energy_unit
-p_0_rel = np.sqrt(theory_w_0_rel**2 - 1) / (mass_e * c)
+# Cs-137 disintegrates by beta minus emission to the excited state of Ba-137 (94.6 %)
+# theory_w_0 = 1.174 * MeV  # erroneous comparison
+# theory_w_0_rel = theory_w_0 / rel_energy_unit # erroneous comparison
+# p_0_rel = np.sqrt(theory_w_0_rel**2 - 1) # erroneous comparison
+theory_T = 0.5120 * MeV
+theory_T_rel = theory_T / rel_energy_unit
+theory_w_0_rel =  theory_T_rel + 1
+p_0_rel = np.sqrt(theory_w_0_rel**2 - 1) 
 # print(p_0_rel)
+
+##############################################################################
+##############################################################################
 
 # # defining the theoretical count (Kuriefunction)
 K_1 = 1 # ?
@@ -130,7 +156,7 @@ plt.title("Kurie relation")
 plt.xlabel("p [mc]")
 plt.ylabel("n(p)dp")
 spa.savefig('Kurie_plot.png')
-plt.show()
+# plt.show()
 
 ######################## THEORETICAL ###############################
 ####################### EXPERIMENTAL ###############################
@@ -147,7 +173,7 @@ plt.xlabel("p [mc]")
 plt.ylabel("n(p)")
 plt.legend()
 spa.savefig('count_vs_momentum_no_background_error.png')
-plt.show()
+# plt.show()
 
 ####################### EXPERIMENTAL ###############################
 ####################### KURIE/Fermi PLOT #####################################
@@ -181,6 +207,8 @@ u_y_fit = fit_results.eval_uncertainty(sigma=1)
 fit_parameters = spa.get_fit_parameters(fit_results)
 # print(f"{fit_parameters=}")
 
+##############################################################################
+##############################################################################
 # using our results to find w_0
 K_2 = - fit_parameters["slope"]
 u_K_2 = fit_parameters["u_slope"]
@@ -189,12 +217,22 @@ u_intercept = fit_parameters["u_intercept"]
 w_0 = intercept / K_2
 u_w_0 = np.sqrt((u_K_2 / K_2)**2 + (u_intercept / intercept)**2) * w_0
 
-print(f"linear fit gradient: {K_2 = }")
-print(f"linear fit intercept: {intercept = }\n")
+# print(f"linear fit gradient: {K_2 = :.3f}± {u_K_2:.3f}")
+# print(f"linear fit intercept: {intercept = :.3f}\n")
 
-print(f"EXPECTED RESULT {theory_w_0_rel = }")
+# using our results to find T
+print(f"EXPECTED RESULT {theory_T_rel = :.3f}")
 # pre-optimisation result 
-print(f"pre-optimisation result  {w_0 = } ± {u_w_0}\n")
+T_rel = w_0 - 1
+u_T_rel = T_rel * (u_w_0 / w_0)
+print(f"pre-optimisation result  {T_rel = :.3f} ± {u_T_rel:.3f}\n")
+# SI units
+T_SI = T_rel * rel_energy_unit / MeV
+u_T_SI = T_rel * (u_w_0 / w_0) * rel_energy_unit / MeV
+print(f"EXPECTED RESULT T = {theory_T / MeV :.3f} MeV")
+print(f"non-relativistic T = {T_SI:.3f} ± {u_T_SI:.3f} MeV\n")
+##############################################################################
+##############################################################################
 
 # plot
 plt.figure()
@@ -219,7 +257,7 @@ plt.xlabel(r"$w [mc^{2}]$")
 plt.ylabel(r"$\left ( \frac{n}{p w G} \right )^{\frac{1}{2}}$", rotation=0, labelpad=18)
 plt.legend()
 spa.savefig('Kurie_linear_data_plot_.png')
-plt.show()
+# plt.show()
 
 ############################# Linear fit #############################
 ##########################Linear fit residuals########################
@@ -239,9 +277,9 @@ plt.xlabel(r"$w [mc^{2}]$")
 plt.ylabel(r"$\left ( \frac{n}{p w G} \right )^{\frac{1}{2}}$", rotation=0, labelpad=18)
 plt.legend()
 spa.savefig('linear_residuals_Kurie_linear_data.png')
-plt.show()
+# plt.show()
 
-# ##########################Linear fit residuals########################
+##########################Linear fit residuals########################
 
 # linear model for optimize.curve_fit()
 def f(x, m, c):
@@ -255,20 +293,47 @@ perr = np.sqrt(np.diag(pcov))
 opt_K_2, opt_intercept = popt
 u_opt_K_2, u_opt_intercept = perr
 
-print(f"optimised gradient {opt_K_2} ± {u_opt_K_2}")
-print(f"optimised intercept {opt_intercept} ± {u_opt_intercept}\n")
+# print(f"optimised gradient {opt_K_2:.3f} ± {u_opt_K_2:.3f}")
+# print(f"optimised intercept {opt_intercept:.3f} ± {u_opt_intercept:.3f}\n")
 
 optimised_fit = f(x, opt_K_2, opt_intercept)
 # uncertainty in linear model f given optimal fit
 u_f = np.sqrt((opt_K_2 * u_x)**2 + (x * u_opt_K_2)**2 + (u_opt_intercept)**2)
 
+##############################################################################
+##############################################################################
 # using our results to find opt_w_0
 opt_w_0 = opt_intercept / - opt_K_2
 u_opt_w_0 = np.sqrt((u_opt_K_2 / opt_K_2)**2 + (u_opt_intercept / opt_intercept)**2) * opt_w_0
 
-print(f"EXPECTED RESULT {theory_w_0_rel = }")
-print(f"post-optimisation result  {opt_w_0 = } ± {u_opt_w_0}\n")
-print(f"non-relativistic w_0 = {opt_w_0 * rel_energy_unit / MeV} ± {u_opt_w_0 * rel_energy_unit / MeV}\n")
+#  wrong comparison:
+# print(f"EXPECTED RESULT {theory_w_0_rel = }")
+# print(f"post-optimisation result  {opt_w_0 = } ± {u_opt_w_0}\n")
+# print(f"non-relativistic w_0 = {opt_w_0 * rel_energy_unit / MeV} ± {u_opt_w_0 * rel_energy_unit / MeV}\n")
+
+# using our results to find opt_T
+# post-optimisation result 
+opt_T_rel = opt_w_0 - 1
+u_opt_T_rel = opt_T_rel * (u_opt_w_0 / opt_w_0)
+print("relativistic units:")
+print(f"EXPECTED RESULT {theory_T_rel = :.3f}")
+print(f"post-optimisation result {opt_T_rel = :.3f} ± {u_opt_T_rel:.3f}\n")
+
+opt_T_SI = opt_T_rel * rel_energy_unit / MeV
+u_opt_T_SI = u_opt_T_rel * (rel_energy_unit / MeV)
+print("SI units:")
+print(f"EXPECTED RESULT T = {theory_T / MeV :.3f} MeV")
+print(f"non-relativistic T = {opt_T_SI:.3f} ± {u_opt_T_SI:.3f} MeV")
+
+
+diff = 0.512 - opt_T_SI
+how_many_sigmas = diff / u_opt_T_SI
+print(f"{diff = :.3f}")
+# print(f"{opt_T_SI}")
+print(f"{how_many_sigmas = :.3f}")
+
+##############################################################################
+##############################################################################
 
 # OPTIMISED FIT PLOT
 plt.figure()
@@ -293,7 +358,7 @@ plt.xlabel(r"$w [mc^{2}]$")
 plt.ylabel(r"$\left ( \frac{n}{p w G} \right )^{\frac{1}{2}}$", rotation=0, labelpad=18)
 plt.legend()
 spa.savefig('OPTIMISED_Kurie_linear_data_plot_.png')
-plt.show()
+# plt.show()
 
 ##########################optimised fit residuals########################
 

@@ -1,0 +1,25 @@
+7.2  In particular, you are given a hint to consider the fractional uncertainty of these points, by using constant counts,you can sort of pre-determine what level of fractional uncertainty you want for a data point. There are also obvious constraints, time alloted for the experiments. You could have also considered doing a combination of constant counts and constant time. These things are worthy of discussion.
+
+18.1 You should still have something along the x direction and almost nothing in the y direction. Is this what you mean?
+
+19.1 How did you determin I_k?
+
+20.2 This uncertianty to me is very small. This is because, you took the maximum value. What if you fit the K-peakwith a Lorentzian or Gaussian to extract the max? I doubt your uncertainty will be that unbelievably small ...
+
+
+AFTER CORRECTION absolute uncertainty: u_k =0.002
+
+
+20.3 You should show the explicit calculation for the u in the background counts here since it's  a small dataset. Forevery uncertainty, you should show an explicit calculation (i.e. using numbers on paper) as an example for eachdata set. 
+
+
+21.1 Honestly, there are only 2 data points for your K peak ... I'm not confident in your finding of the k constant of proportionality. I hope you comment on this weakness
+
+
+21.2 makes sense since the uncertainty in I_k is very small according to your analysis.
+
+24.1 What is the problem? Here you can take u(G) = 0
+I obviously made you confused here.The problem I saw was explained in the following page in my logbook. The subtraction of the background count average caused non-physical values to be part of my count array. since the linearised model has square root this lead to nan values to be present in my array.
+I fixed this and I documented this fix in the logbook.
+
+28.2 Here is a bit of analysis that you are missing. Although it looks like it is going to be more complicated. You canget away with a scheme that is less so: Bring the S_n factor to the LHS so that you have: (n/p*w*G*S)^(1/2) = K*(w_0 -w). Now, you could use your obtained w_0 value for when S = 1 into thisexpression. Then repeat the previous analysis. You should obtain a new w_0 value. What if you continue thisprocess? Eventually, the w_0 value you put in will be the same as the one you get out as the x-uncertainty. Youshould do this for the report.

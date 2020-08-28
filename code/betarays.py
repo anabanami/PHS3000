@@ -167,7 +167,7 @@ u_T_rel = T_rel * (u_w_0 / w_0)
 # SI units
 T_SI = T_rel * rel_energy_unit / MeV
 u_T_SI = T_rel * (u_w_0 / w_0) * rel_energy_unit / MeV
-print(f"EXPECTED RESULT T = {theory_T / MeV :.3f} MeV")
+print(f"\nEXPECTED RESULT T = {theory_T / MeV :.3f} MeV")
 print(f"(pre-optimisation) T = {T_SI:.3f} ± {u_T_SI:.3f} MeV\n")
 
 # plot
@@ -192,7 +192,7 @@ plt.title("Linearised Kurie data")
 plt.xlabel(r"$w [mc^{2}]$")
 plt.ylabel(r"$\left ( \frac{n}{p w G} \right )^{\frac{1}{2}}$", rotation=0, labelpad=18)
 plt.legend()
-spa.savefig('Kurie_linear_data_plot_.png')
+# spa.savefig('Kurie_linear_data_plot_.png')
 # plt.show()
 
 ############################# Linear fit #############################
@@ -211,7 +211,7 @@ plt.title("Residuals: linearised Kurie data")
 plt.xlabel(r"$w [mc^{2}]$")
 plt.ylabel(r"$\left ( \frac{n}{p w G} \right )^{\frac{1}{2}}$", rotation=0, labelpad=18)
 plt.legend()
-spa.savefig('linear_residuals_Kurie_linear_data.png')
+# spa.savefig('linear_residuals_Kurie_linear_data.png')
 # plt.show()
 
 ##########################Linear fit residuals########################
@@ -233,7 +233,7 @@ u_opt_K_2, u_opt_intercept = perr
 
 optimised_fit = f(x, opt_K_2, opt_intercept)
 # uncertainty in linear model f given optimal fit
-u_f = np.sqrt((opt_K_2 * u_x)**2 + (x * u_opt_K_2)**2 + (u_opt_intercept)**2)
+u_f = np.sqrt((x * u_opt_K_2)**2 + (u_opt_intercept)**2)
 
 # OPTIMISED FIT PLOT
 plt.figure()
@@ -257,7 +257,7 @@ plt.title("Optimised linear fit for Kurie data")
 plt.xlabel(r"$w [mc^{2}]$")
 plt.ylabel(r"$\left ( \frac{n}{p w G} \right )^{\frac{1}{2}}$", rotation=0, labelpad=18)
 plt.legend()
-spa.savefig('OPTIMISED_Kurie_linear_data_plot_.png')
+# spa.savefig('OPTIMISED_Kurie_linear_data_plot_.png')
 # plt.show()
 
 ##########################optimised fit residuals########################
@@ -275,15 +275,55 @@ plt.title("Residuals: optimised fit for linear Kurie data")
 plt.xlabel(r"$w [mc^{2}]$")
 plt.ylabel(r"$\left ( \frac{n}{p w G} \right )^{\frac{1}{2}}$", rotation=0, labelpad=18)
 plt.legend()
-spa.savefig('OPTIMISED_linear_residuals_Kurie_linear_data.png')
+# spa.savefig('OPTIMISED_linear_residuals_Kurie_linear_data.png')
 # plt.show()
 
 ##########################optimised fit residuals########################
-
-
 # using our results to find opt_w_0
 opt_w_0 = opt_intercept / - opt_K_2
 u_opt_w_0 = np.sqrt((u_opt_K_2 / opt_K_2)**2 + (u_opt_intercept / opt_intercept)**2) * opt_w_0
+
+
+#################################################################################################################################
+
+# Shape factor
+print(f"{opt_w_0=}\n")
+
+# # LINEARISED KURIE WITH RESOLUTION CORRECTION & shape factor from Siegbahn
+def S_n(w_rel, w_0):
+    return w_rel**2 - 1 + (w_0 - w_rel)**2
+# u_S_n = 
+
+y2 = np.sqrt(correct_count[8:18] / (p_rel[8:18] * x * interpolated_fermi(p_rel[8:18]) * S_n(w_rel, w_0)))
+# u_y2 = (y2 / 2) * np.sqrt((u_correct_count[8:18] / correct_count[8:18].clip(min=1))**2 + (2 * (u_p_rel[8:18] / p_rel[8:18])**2) + (u_interpolated_fermi / interpolated_fermi(p_rel[8:18]))**2 + (u_S_n / S_n)**2)
+u_y2 = u_y
+# we use f(x, m, c) as linear model for optimize.curve_fit() where x = w_rel
+# optimising our fit, unpack into popt, pcov
+popt, pcov = scipy.optimize.curve_fit(f, x, y2, sigma=u_y2, absolute_sigma=False)
+# To compute one standard deviation errors on the parameters use 
+perr = np.sqrt(np.diag(pcov))
+
+opt_K_2, opt_intercept = popt
+u_opt_K_2, u_opt_intercept = perr
+
+# print(f"optimised gradient {opt_K_2:.3f} ± {u_opt_K_2:.3f}")
+# print(f"optimised intercept {opt_intercept:.3f} ± {u_opt_intercept:.3f}\n")
+
+optimised_fit = f(x, opt_K_2, opt_intercept)
+# # uncertainty in linear model f given optimal fit
+u_f = np.sqrt((x * u_opt_K_2)**2 + (u_opt_intercept)**2)
+
+
+# using our results to find T
+# pre-optimisation result 
+# T_rel = w_0 - 1
+# u_T_rel = T_rel * (u_w_0 / w_0)
+
+# # SI units
+# T_SI = T_rel * rel_energy_unit / MeV
+# u_T_SI = T_rel * (u_w_0 / w_0) * rel_energy_unit / MeV
+# print(f"\nEXPECTED RESULT T = {theory_T / MeV :.3f} MeV")
+# print(f"(pre-optimisation) T = {T_SI:.3f} ± {u_T_SI:.3f} MeV\n")
 
 # using our results to find opt_T
 # post-optimisation result 
@@ -297,6 +337,6 @@ diff = 0.512 - opt_T_SI
 how_many_sigmas = diff / u_opt_T_SI
 print(f"(optimised) T = {opt_T_SI:.3f} ± {u_opt_T_SI:.3f} MeV")
 # print(f"difference {diff:.3f}")
-print(f"𝞼 away from the true result: {how_many_sigmas:.3f}")
+print(f"𝞼 away from the true result: {how_many_sigmas:.3f}\n")
 
 

@@ -21,8 +21,7 @@ eV = 1.602176634e-19 # [J]
 MeV = 1e6 * eV
 keV = 1e3 * eV
 rel_energy_unit = mass_e * c**2 # to convert SI into relativistic or viceversa
-K_1 = 1
-Sn = 1
+
 
 # Desintegration energy
 # Cs-137 disintegrates by beta minus emission to the excited state of Ba-137 (94.6 %)
@@ -34,7 +33,7 @@ p_0_rel = np.sqrt(theory_w_0_rel**2 - 1)
 data = spa.betaray.read_data(r'beta-ray_data.csv')
 
 def csv(data_file):
-    # valid data slicing from csv file
+    # extracting valid data from csv file
     j = 0
     for row in data:
         # print(f'{j=}')
@@ -56,48 +55,41 @@ def csv(data_file):
         lens_current.append(row[6])
         u_lens_current.append(row[7])
 
-    # make np array
+    # make lens current an np.array
     lens_current = np.array(lens_current)
     return background_count_data, count, lens_current, u_lens_current
 
-def k(lens_current):
+def compute_k(lens_current):
     # Finding constant of proportionality in p = kI
     # calibration peak (K) index of k peak is i=20
     T_K = 624.21 * keV / rel_energy_unit
     I_k = lens_current[20] 
     k = np.sqrt((T_K + 1)**2 - 1) / I_k
-
-    # defining an appropriate uncertainty for our k peak
+    # defining appropriate uncertainty for our k peak
     u_I_k = 0.1 / 2
     u_k = k * (u_I_k / lens_current[20])
-    # print(f"\nabsolute uncertainty in I_k = {u_I_k:.3f}")
-    # print(f"absolute uncertainty in k = {u_k:.3f}")
-    # print(f"fractional uncertainty in k = {u_k / k:.3f}\n")
     return k, u_k
 
-def p_rel(lens_current, k, u_k):
+def compute_p_rel(lens_current, k, u_k):
     # The momentum spectrum (relativistic units)
     p_rel = k * lens_current
-    # uncertainty in p
     u_p_rel = p_rel * np.sqrt((u_k / k)**2 + (0.0005 / lens_current)**2)
-    # print(f"absolute uncertainty u(p_rel):\n {u_p_rel}")
-    # print(f"fractional uncertainty u(p_rel) / p_rel:\n {(u_p_rel / p_rel)}")
     dp_rel = p_rel[1]-p_rel[0]
     return p_rel, u_p_rel, dp_rel
 
 def interpolated_fermi(p_rel):
-    # KURIE/Fermi PLOT
+    # G = (p_rel * F(z=55, ,w_rel)) / w_rel
     fermi_data = spa.betaray.modified_fermi_function_data
     return interp1d(fermi_data[:,0], fermi_data[:,1], kind='cubic')(p_rel)
 
-def n(p_rel):
+def compute_w(p_rel):
+    # KURIE/Fermi PLOT
     w_rel = np.sqrt(p_rel**2 + 1) # relativistic energy units
     u_w_rel = u_p_rel[8:18]
-    n = K_1 * Sn * (w_rel * interpolated_fermi(p_rel) / p_rel) * p_rel**2 * (theory_w_0_rel - w_rel)**2
     return w_rel, u_w_rel
 
 def correct_count(background_count_data):
-    # correcting our data by removing avg background count
+    # correcting our data by removing avg background count and adjusting it for spectrometer resolution (3%)
     background_count = []
     for row in background_count_data:
         background_count.append(row[5])
@@ -111,8 +103,8 @@ def correct_count(background_count_data):
     background_corrected_count = count - avg_background_count
 
     ##################################################################################
-    # I chose the uncertainty in the count to be 10 counts
-    u_background_corrected_count = np.sqrt(10**2 + u_avg_background_count**2)
+    # I chose the uncertainty in the count to be 15 counts
+    u_background_corrected_count = np.sqrt(15**2 + u_avg_background_count**2)
     ##################################################################################
 
     # As per Siegbahn [9] correction for spectrometers resolution
@@ -124,18 +116,20 @@ def f(x, m, c):
     # linear model for optimize.curve_fit()
     return m * x + c
 
-# shape factor from Siegbahn
-def S_n(x, opt_w_n, u_opt_w_n):
-    u_S_n = np.sqrt((2 * u_x * x)**2 + (2 * np.sqrt(u_opt_w_n**2 + u_x**2) * (opt_w_n - x))**2)
+def compute_S_n(x, opt_w_n, u_opt_w_n):
+    # shape factor from Siegbahn
     S_n = x**2 - 1 + (opt_w_n - x)**2
+    u_S_n = np.sqrt((2 * u_x * x)**2 + (2 * np.sqrt(u_opt_w_n**2 + u_x**2) * (opt_w_n - x))**2)
     return S_n, u_S_n
 
-def LHS(S_n):
+def LHS(S_n, u_S_n):
+    # left hand side of our linearised relation
     y = np.sqrt(correct_count[8:18] / (p_rel[8:18] * x * interpolated_fermi(p_rel[8:18]) * S_n))
     u_y = (y / 2) * np.sqrt((u_correct_count[8:18] / correct_count[8:18])**2 + (2 * (u_p_rel[8:18] / p_rel[8:18])**2) + (u_interpolated_fermi / interpolated_fermi(p_rel[8:18]))**2 + (u_S_n / S_n)**2)
     return y, u_y
 
 def optimal_fit(f, x, y, u_y):
+    # linear fit
     # unpack into popt, pcov
     popt, pcov = scipy.optimize.curve_fit(f, x, y, sigma=u_y, absolute_sigma=False)
     # To compute one standard deviation errors on the parameters use 
@@ -153,19 +147,43 @@ def optimal_fit(f, x, y, u_y):
     # return optimal parameters
     return opt_K_2, opt_intercept, u_opt_K_2, u_opt_intercept
 
-# comparison to theory
-def compare(opt_w_n, u_opt_w_n):
-# using our results to find T
-    opt_T_rel = opt_w_n - 1
-    u_opt_T_rel = opt_T_rel * (u_opt_w_n / opt_w_n)
-    opt_T = opt_T_rel * rel_energy_unit / MeV
-    u_opt_T = u_opt_T_rel * (rel_energy_unit / MeV)
-    diff = 0.512 - opt_T
-    how_many_sigmas = diff / u_opt_T
+def iterative_solve(x, w_n, u_w_n):
+    # using our results to find T
+    T = (w_n - 1) * rel_energy_unit / MeV
+    u_T = ((w_n - 1) * (u_w_n / w_n)) * (rel_energy_unit / MeV)
+    print(f"T = {T:.3f} ± {u_T:.3f} MeV")
+
+    print("\nHenlo, this is the start of the while loop")
+    while True:
+        old_T = T
+
+        S_n, u_S_n = compute_S_n(x, w_n, u_w_n)
+        yn, u_yn = LHS(S_n, u_S_n)
+        K_2, intercept, u_K_2, u_intercept = optimal_fit(f, x, yn, u_yn)
+
+        # using our results to find new w_n
+        w_n = intercept / - K_2
+        u_w_n = np.sqrt((u_K_2 / K_2)**2 + (u_intercept / intercept)**2) * w_n
+
+        # new T in SI units
+        T = (w_n - 1) * rel_energy_unit / MeV
+        u_T = ((w_n - 1) * (u_w_n / w_n)) * (rel_energy_unit / MeV)
+        print(f"T = {T:.3f} ± {u_T:.3f} MeV")
+
+        if abs(T - old_T) < 1e-12 * MeV:
+            break
+    print("\nthis is the end of the while loop, yay bai.")
+    
+    return T, u_T
+
+def compare(T, u_T):
+    # comparison to theory
+    diff = 0.512 - T
+    how_many_sigmas = diff / u_T
     print(f"\nEXPECTED RESULT T = {theory_T / MeV :.3f} MeV")
-    print(f"(optimised) T = {opt_T:.3f} ± {u_opt_T:.3f} MeV")
+    print(f"(optimised) T = {T:.3f} ± {u_T:.3f} MeV")
     # print(f"difference {diff:.3f}")
-    print(f"number of 𝞼: {- how_many_sigmas:.3f}")
+    print(f"number of 𝞼 away from true result: {- how_many_sigmas:.3f}")
 
 ########################### Calling our functions ###########################
 
@@ -173,17 +191,17 @@ def compare(opt_w_n, u_opt_w_n):
 background_count_data, count, lens_current, u_lens_current = csv(data)
 
 # find constant k
-k, u_k = k(lens_current)
+k, u_k = compute_k(lens_current)
 
 # find momentum spectrum
-p_rel, u_p_rel, dp_rel = p_rel(lens_current, k, u_k)
+p_rel, u_p_rel, dp_rel = compute_p_rel(lens_current, k, u_k)
 
 # correct background count (accounting for background and resolution (3%))
 correct_count, u_correct_count = correct_count(background_count_data)
 
 ######################### Linear fit ##########################
 # our sliced data linearised
-x, u_x = n(p_rel[8:18])
+x, u_x = compute_w(p_rel[8:18])
 
 # uncertainty in interpolated fermi
 u_interpolated_fermi = np.sqrt((u_p_rel[8:18] / p_rel[8:18])**2 + (u_x / x)**2) * interpolated_fermi(p_rel[8:18])
@@ -198,17 +216,11 @@ opt_K_2, opt_intercept, u_opt_K_2, u_opt_intercept = optimal_fit(f, x, y, u_y)
 opt_w_0 = opt_intercept / - opt_K_2
 u_opt_w_0 = np.sqrt((u_opt_K_2 / opt_K_2)**2 + (u_opt_intercept / opt_intercept)**2) * opt_w_0
 
-# ANALYSIS using Shape factor
-# shape factor
-S_n, u_S_n = S_n(x, opt_w_0, u_opt_w_0)
-yn, u_yn = LHS(S_n)
-opt_K_2, opt_intercept, u_opt_K_2, u_opt_intercept = optimal_fit(f, x, yn, u_yn)
+# # ITERATIVE ANALYSIS using Shape factor
+T, u_T = iterative_solve(x, opt_w_0, u_opt_w_0)
 
-# using our results to find opt_w_1
-opt_w_1 = opt_intercept / - opt_K_2
-u_opt_w_1 = np.sqrt((u_opt_K_2 / opt_K_2)**2 + (u_opt_intercept / opt_intercept)**2) * opt_w_1
 
-compare(opt_w_1, u_opt_w_1)
+compare(T, u_T)
 
 ############################ plots ############################
 # # OPTIMISED FIT PLOT

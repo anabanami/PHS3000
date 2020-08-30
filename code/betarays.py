@@ -138,8 +138,8 @@ def optimal_fit(f, x, y, u_y):
     # optimal parameters
     opt_K_2, opt_intercept = popt
     u_opt_K_2, u_opt_intercept = perr
-    print(f"\noptimised gradient {opt_K_2:.3f} ± {u_opt_K_2:.3f}")
-    print(f"optimised intercept {opt_intercept:.3f} ± {u_opt_intercept:.3f}")
+    # print(f"\noptimised gradient {opt_K_2:.3f} ± {u_opt_K_2:.3f}")
+    # print(f"optimised intercept {opt_intercept:.3f} ± {u_opt_intercept:.3f}")
 
     optimised_fit = f(x, opt_K_2, opt_intercept)
     # uncertainty in linear model f given optimal fit
@@ -149,14 +149,11 @@ def optimal_fit(f, x, y, u_y):
 
 def iterative_solve(x, w_n, u_w_n):
     # using our results to find T
-    T = (w_n - 1) * rel_energy_unit / MeV
-    u_T = ((w_n - 1) * (u_w_n / w_n)) * (rel_energy_unit / MeV)
-    print(f"T = {T:.3f} ± {u_T:.3f} MeV")
+    T = (w_n - 1) * rel_energy_unit
 
-    print("\nHenlo, this is the start of the while loop")
+    # print("\nHenlo, this is the start of the while loop")
     while True:
         old_T = T
-
         S_n, u_S_n = compute_S_n(x, w_n, u_w_n)
         yn, u_yn = LHS(S_n, u_S_n)
         K_2, intercept, u_K_2, u_intercept = optimal_fit(f, x, yn, u_yn)
@@ -166,24 +163,26 @@ def iterative_solve(x, w_n, u_w_n):
         u_w_n = np.sqrt((u_K_2 / K_2)**2 + (u_intercept / intercept)**2) * w_n
 
         # new T in SI units
-        T = (w_n - 1) * rel_energy_unit / MeV
-        u_T = ((w_n - 1) * (u_w_n / w_n)) * (rel_energy_unit / MeV)
-        print(f"T = {T:.3f} ± {u_T:.3f} MeV")
+        T = (w_n - 1) * rel_energy_unit
+        
+        # print(f"T = {T / MeV} MeV")
+        # print(f"old_T = {old_T / MeV} MeV\n") 
 
-        if abs(T - old_T) < 1e-12 * MeV:
+        if abs(T - old_T) < 1e-10 * MeV:
             break
-    print("\nthis is the end of the while loop, yay bai.")
-    
+    # print("\nthis is the end of the while loop, yay bai.")
+
+    u_T = (w_n - 1) * u_w_n / w_n * rel_energy_unit
     return T, u_T
 
 def compare(T, u_T):
     # comparison to theory
-    diff = 0.512 - T
+    diff = 0.512 * MeV - T
     how_many_sigmas = diff / u_T
     print(f"\nEXPECTED RESULT T = {theory_T / MeV :.3f} MeV")
-    print(f"(optimised) T = {T:.3f} ± {u_T:.3f} MeV")
+    print(f"(optimised) T = {T / MeV:.3f} ± {u_T / MeV:.3f} MeV")
     # print(f"difference {diff:.3f}")
-    print(f"number of 𝞼 away from true result: {- how_many_sigmas:.3f}")
+    print(f"number of 𝞼 away from true result: {abs(how_many_sigmas):.3f}")
 
 ########################### Calling our functions ###########################
 
@@ -262,4 +261,4 @@ compare(T, u_T)
 # plt.ylabel(r"$\left ( \frac{n}{p w G} \right )^{\frac{1}{2}}$", rotation=0, labelpad=18)
 # plt.legend()
 # # spa.savefig('OPTIMISED_linear_residuals_Kurie_linear_data.png')
-# # plt.show()
+plt.show()

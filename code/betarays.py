@@ -126,6 +126,7 @@ def LHS(S_n, u_S_n):
     # left hand side of our linearised relation
     y = np.sqrt(correct_count[8:18] / (p_rel[8:18] * x * interpolated_fermi(p_rel[8:18]) * S_n))
     u_y = (y / 2) * np.sqrt((u_correct_count[8:18] / correct_count[8:18])**2 + (2 * (u_p_rel[8:18] / p_rel[8:18])**2) + (u_interpolated_fermi / interpolated_fermi(p_rel[8:18]))**2 + (u_S_n / S_n)**2)
+    # u_y = (y / 2) * np.sqrt((u_correct_count[8:18] / correct_count[8:18])**2 + (2 * (u_p_rel[8:18] / p_rel[8:18])**2) + (u_S_n / S_n)**2)
     return y, u_y
 
 def optimal_fit(f, x, y, u_y):
@@ -145,7 +146,7 @@ def optimal_fit(f, x, y, u_y):
     # uncertainty in linear model f given optimal fit
     u_f = np.sqrt((x * u_opt_K_2)**2 + (u_opt_intercept)**2)
     # return optimal parameters
-    return opt_K_2, opt_intercept, u_opt_K_2, u_opt_intercept
+    return opt_K_2, opt_intercept, u_opt_K_2, u_opt_intercept, optimised_fit, u_f
 
 def iterative_solve(x, w_n, u_w_n):
     # using our results to find T
@@ -156,7 +157,7 @@ def iterative_solve(x, w_n, u_w_n):
         old_T = T
         S_n, u_S_n = compute_S_n(x, w_n, u_w_n)
         yn, u_yn = LHS(S_n, u_S_n)
-        K_2, intercept, u_K_2, u_intercept = optimal_fit(f, x, yn, u_yn)
+        K_2, intercept, u_K_2, u_intercept, optimised_fit, u_f = optimal_fit(f, x, yn, u_yn)
 
         # using our results to find new w_n
         w_n = intercept / - K_2
@@ -173,14 +174,14 @@ def iterative_solve(x, w_n, u_w_n):
     # print("\nthis is the end of the while loop, yay bai.")
 
     u_T = (w_n - 1) * u_w_n / w_n * rel_energy_unit
-    return T, u_T
+    return T, u_T, yn, u_yn, optimised_fit, u_f
 
 def compare(T, u_T):
     # comparison to theory
     diff = 0.512 * MeV - T
     how_many_sigmas = diff / u_T
     print(f"\nEXPECTED RESULT T = {theory_T / MeV :.3f} MeV")
-    print(f"(optimised) T = {T / MeV:.3f} ± {u_T / MeV:.3f} MeV")
+    print(f"(optimised) T = {T / MeV:.2f} ± {u_T / MeV:.2f} MeV")
     # print(f"difference {diff:.3f}")
     print(f"number of 𝞼 away from true result: {abs(how_many_sigmas):.3f}")
 
@@ -208,57 +209,57 @@ u_interpolated_fermi = np.sqrt((u_p_rel[8:18] / p_rel[8:18])**2 + (u_x / x)**2) 
 # LINEARISED KURIE WITH RESOLUTION CORRECTION
 y = np.sqrt(correct_count[8:18] / (p_rel[8:18] * x * interpolated_fermi(p_rel[8:18])))
 u_y = (y / 2) * np.sqrt((u_correct_count[8:18] / correct_count[8:18].clip(min=1))**2 + (2 * (u_p_rel[8:18] / p_rel[8:18])**2) + (u_interpolated_fermi / interpolated_fermi(p_rel[8:18]))**2)
+# u_y = (y / 2) * np.sqrt((u_correct_count[8:18] / correct_count[8:18])**2 + (2 * (u_p_rel[8:18] / p_rel[8:18])**2))
 
-# first fit
-opt_K_2, opt_intercept, u_opt_K_2, u_opt_intercept = optimal_fit(f, x, y, u_y)
+# first order fit
+opt_K_2, opt_intercept, u_opt_K_2, u_opt_intercept, optimised_fit, u_f = optimal_fit(f, x, y, u_y)
 # using our parameters to find opt_w_0
 opt_w_0 = opt_intercept / - opt_K_2
 u_opt_w_0 = np.sqrt((u_opt_K_2 / opt_K_2)**2 + (u_opt_intercept / opt_intercept)**2) * opt_w_0
 
-# # ITERATIVE ANALYSIS using Shape factor
-T, u_T = iterative_solve(x, opt_w_0, u_opt_w_0)
+# ITERATIVE ANALYSIS using Shape factor (higher order fits)
+T, u_T, yn, u_yn, optimised_fit, u_f = iterative_solve(x, opt_w_0, u_opt_w_0)
 
-
+# final comparison to theoretical value T = 0.512 MeV
 compare(T, u_T)
 
 ############################ plots ############################
-# # OPTIMISED FIT PLOT
-# plt.figure()
-# plt.errorbar(
-#             x, y, xerr=u_p_rel[8:18], yerr=u_y,
-#             marker="None", linestyle="None", ecolor="m", 
-#             label=r"$y = (\frac{n}{p w G})^{\frac{1}{2}}$", color="g", barsabove=True
-# )
-# plt.plot(
-#         x, optimised_fit, marker="None",
-#         linestyle="-", 
-#         label="linear fit"
-# )
-# plt.fill_between(
-#                 x, optimised_fit - u_f,
-#                 optimised_fit + u_f,
-#                 alpha=0.5,
-#                 label="uncertainty in linear fit"
-# )
-# plt.title("Optimised linear fit for Kurie data")
-# plt.xlabel(r"$w [mc^{2}]$")
-# plt.ylabel(r"$\left ( \frac{n}{p w G} \right )^{\frac{1}{2}}$", rotation=0, labelpad=18)
-# plt.legend()
-# # spa.savefig('OPTIMISED_Kurie_linear_data_plot_.png')
-# # plt.show()
+# OPTIMISED FIT PLOT and residuals plot
+plt.figure()
+plt.errorbar(
+            x, yn, xerr=u_p_rel[8:18], yerr=u_yn,
+            marker="None", linestyle="None", ecolor="m", 
+            label=r"$y = (\frac{n}{p w G})^{\frac{1}{2}}$", color="g", barsabove=True
+)
+plt.plot(
+        x, optimised_fit, marker="None",
+        linestyle="-", 
+        label="linear fit"
+)
+plt.fill_between(
+                x, optimised_fit - u_f,
+                optimised_fit + u_f,
+                alpha=0.5,
+                label="uncertainty in linear fit"
+)
+plt.title("linear fit for Kurie data")
+plt.xlabel(r"$w [mc^{2}]$")
+plt.ylabel(r"$\left ( \frac{n}{p w G} \right )^{\frac{1}{2}}$", rotation=0, labelpad=18)
+plt.legend()
+# spa.savefig('Kurie_linear_data_plot.png')
 
-# optimised_residuals = optimised_fit - y
-# # plot
-# plt.figure()
-# plt.errorbar(
-#             x, optimised_residuals, xerr=u_p_rel[8:18], yerr=u_f,
-#             marker="o", ecolor="m", linestyle="None",
-#             label="Residuals (linearised data)"
-# )
-# plt.plot([x[0], x[-1]], [0,0], color="k")
-# plt.title("Residuals: optimised fit for linear Kurie data")
-# plt.xlabel(r"$w [mc^{2}]$")
-# plt.ylabel(r"$\left ( \frac{n}{p w G} \right )^{\frac{1}{2}}$", rotation=0, labelpad=18)
-# plt.legend()
-# # spa.savefig('OPTIMISED_linear_residuals_Kurie_linear_data.png')
+residuals = optimised_fit - yn
+plt.figure()
+plt.errorbar(
+            x, residuals, xerr=u_p_rel[8:18], yerr=u_f,
+            marker="o", ecolor="m", linestyle="None",
+            label="Residuals (linearised data)"
+)
+plt.plot([x[0], x[-1]], [0,0], color="k")
+plt.title("Residuals: linear fit for Kurie data")
+plt.xlabel(r"$w [mc^{2}]$")
+plt.ylabel(r"$\left ( \frac{n}{p w G} \right )^{\frac{1}{2}}$", rotation=0, labelpad=18)
+plt.legend()
+# spa.savefig('linear_residuals_Kurie_linear_data.png')
 plt.show()
+############################ plots ############################

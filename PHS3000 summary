@@ -9,11 +9,11 @@ mathematica
     [x] wk1: intro 
     [x] wk2: non-linear fits
     [x] wk3: matlab data fitting
+    [x] wk4: science report writing [ABSTRACT]
+    [x] wk5: stats and distribution functions
 
-    [ ] wk4: science report writing [ABSTRACT]
-    
-    [] wk5: stats and distribution functions
     [] wk6: distribution functions
+    
     [] wk7: uncertainty analysis
     [] wk8: data rejection and fitting
     [] wk9: model testing
@@ -22,23 +22,22 @@ mathematica
     [] wk12: phase-locked detection methods
     
 -LABORATORY-
-4 EXPERIMENTS (1 every 3 weeks)
+4 EXPERIMENTS
 LOGBOOKS
     -Follow experiment script
     -Write log
     -Analysis
 
-Sessions every TUESDAY and THURSDAY (10am - 4pm)
     ASSESMENT:
     worth 90% of total
 
-                                            LABWORK DURING LOCKDOWN:
-                                            4.04 REMOTE CONTROL BETA-RAY SPECTROMETER
-                                                [x]BOOKING
-                                                    [x]THURSDAY 10:00-16:00
-                                                    [-]SUNDAY (16/08) 11:00-17:00 (VOID)
-                                                    [x]TUESDAY (18/08) 11:00-17:00
-                                                [x] logbook
+LABWORK DURING LOCKDOWN:
+4.04 REMOTE CONTROL BETA-RAY SPECTROMETER
+    [x]BOOKING
+        [x]THURSDAY 10:00-16:00
+        [-]SUNDAY (16/08) 11:00-17:00 (VOID)
+        [x]TUESDAY (18/08) 11:00-17:00
+    [x] logbook
                                                 [] report
 
 1.06 Rubidium hyperfine spectroscopy

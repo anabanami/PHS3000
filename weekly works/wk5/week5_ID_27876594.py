@@ -16,14 +16,14 @@ print(f"\nExercise 1\n")
 a = 3.323
 u_a = 1.4 
 
-b = 1234567 / 1e5
-u_b = 54321 / 1e5
+b = 1234567 / 1e6
+u_b = 54321 / 1e6
 
-c = 533
-u_c = 3.21
+c = 5.33
+u_c = 3.21 * 1e-2
 
-d = 0.000000538 / 1e-6
-u_d = 0.00000003 / 1e-6
+d = 0.000000538 / 1e-7
+u_d = 0.00000003 / 1e-7
 
 e = 5.03
 u_e = 0.04329
@@ -32,15 +32,17 @@ f = 1.5432
 u_f = 1
 
 g = 3.267
-u_g = 42 / 1e3
+u_g = 42 / 1e2
 
 print(f"(a) {a:.1f} ± {u_a:.1f} mm")
-print(f"(b) {b:.1f} ± {u_b:.1f} ×10^5 s")
-print(f"(c) {c:.0f} ± {u_c:.0f} nm")
-print(f"(d) {d:.2f} ± {u_d:.2f} m")
+print(f"(b) ({b:.2f} ± {u_b:.2f}) ×10^6 s")
+
+print(f"(c) ({c:.2f} ± {u_c:.2f}) ×10^-7 m")
+
+print(f"(d) ({d:.1f} ± {u_d:.1f}) ×10^-7 m")
 print(f"(e) {e:.2f} ± {u_e:.2f} m")
 print(f"(f) {f:.0f} ± {u_f} s")
-print(f"(g) {g:.2f} ± {u_g:.2f} ×10^2 kg * m / s")
+print(f"(g) ({g:.2f} ± {u_g:.2f}) ×10^3 g * cm / s")
 
 # Exercise 2
 # (a) The best estimate fo the period of the pendulum, p.
@@ -56,10 +58,10 @@ pendulum_data = np.asarray(pendulum_data, dtype=np.float32)
 𝝈 = np.std(pendulum_data)
 std_err = 𝝈 / np.sqrt(len(pendulum_data))
 
-print(f"The best estimate for the period of the pendulum is the mean period {μ = :.2f}")
-print(f"the best measure of the uncertainty in the period is the standard error = {std_err:.2f}")
+print(f"The best estimate for the period of the pendulum is the mean period {μ =:.3f} s")
+print(f"the best measure of the uncertainty in the period is the standard error = {std_err:.3f} s")
 # (b) What is the uncertainty, Δ𝑝,  in any individual measurement of the pendulum’s period?
-print(f"the uncertainty in any individual measurement of the the period (Δ𝑝) is the standard deviation {𝝈 = :.2f}\n")
+print(f"the uncertainty in any individual measurement of the the period (Δ𝑝) is the standard deviation {𝝈 = :.2f} s\n")
 
 
 
@@ -80,13 +82,13 @@ print(f"{counts = }, length of list: {len(counts)}")
 print(f"{bin_edges[:-1]=}, length of list: {len(bin_edges[:-1])}")
 
 # handmade histogram
-plt.figure(1)
-plt.grid(linestyle=':')
-plt.xticks(bin_edges[:-1], fontsize=8)
-plt.bar(bin_edges[:-1], counts,width=0.016, color='#F8C1BB', alpha=0.5)
-plt.xlabel('period / s')
-plt.ylabel('counts')
-plt.title('Pendulum period data')
+# plt.figure(1)
+# plt.grid(linestyle=':')
+# plt.xticks(bin_edges[:-1], fontsize=8)
+# plt.bar(bin_edges[:-1], counts,width=0.016, color='#F8C1BB', alpha=0.5)
+# plt.xlabel('period / s')
+# plt.ylabel('counts')
+# plt.title('Pendulum period data')
 # plt.show()
 
 # using plt.hist()

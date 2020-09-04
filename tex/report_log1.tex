@@ -1,0 +1,79 @@
+% latexmk -pvc -pdf
+\documentclass[12pt, a4paper]{article}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{multicol}
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage[english]{babel}
+\usepackage{blindtext}
+
+\title{Measurement of $\beta$-ray spectra}
+\author{Ana C. Fabela Hinojosa\\
+\small{School of Physics and Astronomy, Monash University}}
+\date{Experiment performed: Tuesday 18\textsuperscript{th} August, 2020}
+\begin{document}
+\maketitle
+\begin{abstract}
+Using a thin lens magnetic spectrometer, we measure the momentum spectrum of electrons emitted as $\beta^{-}$ rays from a radioactive source of \textsuperscript{137}Cs. 
+The detected momentum of the radiated electrons is defined by the spectrometer's adjustable magnetic lens current and $k$ a proportionality constant dependent on the geometry of the apparatus. The magnetic field of the lens is varied by changing the current passing though the lens coil which has the effect of modifying the trajectories of the electrons, focusing electrons with specific momenta onto the detector allowing us to measure their intensity. By converting the measured momentum to energy we are able to fit our data to a linear model based on the Fermi-Kurie plot. We find that the value of the kinetic energy of the nuclear transition is $T = 0.520 \pm 0.044$ MeV which is in agreement with the accepted value of $T = 0.512$ MeV\cite{SPA}.
+\end{abstract}
+
+\section{Introduction}
+\begin{multicols}{2}
+When Henri Becquerel first observed $\beta-$radiation, he determined that the observed radiated particle satisfied the same mass-to-charge ratio as the electron, the particle that J.J Thompson had discovered in 1897. 
+
+Later experimental results showed that electrons observed as $\beta-$rays are emitted with a continuous range of kinetic energies up to a maximum value\cite{SMM}. 
+The discovery of a continuous distribution rather than a discrete predictable value for the electron kinetic energies took physicists by surprise since it violates energy, momentum and angular momentum conservation laws.
+
+It was in fact this counterintuitive result which led Wolfgang Pauli to propose in 1930 that the observed anomalies must be due emission of a yet unknown particle.
+In 1934 Enrico Fermi called this massless and undetectable particle a "neutrino" and developed an advanced theory of beta decay based on it, but the neutrino was not experimentally observed until much later in 1956.\cite{Nave-beta} Due to symmetry considerations, the lepton emmited together with the electron during $\beta^{-}$ decay is called an antineutrino.
+
+The process we currently know as $\beta^{-}$ decay describes a neutron in a parent nucleus desintegrating into a proton in a daughter nucleus, an electron and an antineutrino.
+
+In a $\beta^{-}$event, both nuclides (nuclear species) have the same number of nucleons. This means that the daughter nucleus will not experience a substantial change in kinetic energy (recoil) due to the decay event. Leaving most of the desintegration energy available to be carried-off by the leptons as kinetic energy. 
+
+A parent nucleus has a given initial energy $w$. 
+The avalilable kinetic energy of the system is equal to the decrease in mass energy due to the creation of the radiated leptons:
+\begin{equation}T = w - m c^2,
+\end{equation} where $m$ is the difference in mass between the daughter and parent nuclides.
+
+The observable count of $\beta^{-}$electrons as a function of energy is now described by the Kurie--Fermi Theory of $\beta^{-}$decay. The theory defines the distribution of the available nuclear desintegration energy to be carried-off as kinetic energy by both leptons. The observed maximum value in the Kurie--Fermi plot represents the count of electrons that take carry-off the maximum possible kinetic energy whilst the antineutrinos carry close to zero kinetic energy from the transition.
+
+ % The spectrum is a direct result of the varying (?) mass of the antineutrino.
+
+\section{$\beta$ decay theory}
+
+In this experiment we measure the momentum spectrum of emitted $\beta-$rays from a radioactive source of  \textsuperscript{137}Cs.
+ \textsuperscript{137}Cs decays to an excited state of \textsuperscript{137}Ba. This transition occurs with a probability of $94.6\%$\cite{SPA}. The maximum energy value of this decay event is known to be $T = 0.512$ MeV.
+
+Our experimental apparatus is a thin magnetic lens spectrometer. The operation of $\beta$ spectrometers depends on the behaviour of electrons subject to magnetic fields. The magnetic field of the spectrometer lens is varied by changing the current passing though the lens coils which has the effect of modifying the trajectories of the electrons by the Lorentz force,
+\begin{equation}\vec{F} = e^{-} \vec{v} \times \vec{B}
+\end{equation} 
+ The result is a set of electrons focused onto the spectrometer detector all with a specific range momenta (other electrons in the momentum spectrum undergo chromatic aberration)
+
+% determine the total energy released by one of the nuclear transitions.~\cite{SPA}.
+
+
+
+% Measurements of the energies and intensities of $\beta$-rays are important in the investigation 
+
+
+% of \textsuperscript{137}Cs.
+
+
+\end{multicols}
+\bibliography{mybib}
+\bibliographystyle{unsrt}
+\end{document}
+
+
+
+% the effect of the magnetic field being to cause a cone of electron trajectories diverging from the source to spiral around the axis of the instrument and become a cone converging on to the detector
+
+
+% The constant $k$ is determined by calibrating the observed spectrum to the well-known K-conversion peak with kinetic energy $T = 624.21$ keV.
+
+
+% [9] The use of coordinates of momentum instead of energy in β-ray spectroscopy is partly due to the simple fact that it is the momentum of the focused electrons that is proportional to the magnetic field of the spectrometer or (approximately, if iron is used) to the exciting electric current, and not the energy.
+
+% [9] Suppose that we investigate a distribution of electrons in a magnetic spectrometer,
+% the momentum distribution being N(p)dp. ... In a magnetic spectrometer with fixed geometry and variable B the quantity R = ∆(Bρ)/Bρ is constant, where ∆(Bρ) is a measure of the accepted momentum band. When plotting the momentum distribution it is therefore necessary to divide the number of counts P at each magnetic field setting by the corresponding field in order to get the correct form of the spectrum

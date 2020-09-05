@@ -1,6 +1,6 @@
 % latexmk -pvc -pdf
-\documentclass[12pt, a4paper]{article}
-\usepackage[margin=0.5in]{geometry}
+\documentclass[10pt, a4paper]{article}
+\usepackage[margin=1in]{geometry}
 \usepackage{multicol}
 \usepackage{amsmath,amsthm,amsfonts,amssymb}
 \usepackage[english]{babel}
@@ -21,9 +21,12 @@ The detected momentum of the radiated electrons is defined by the spectrometer's
 \begin{multicols}{2}
 When Henri Becquerel first observed $\beta-$radiation, he determined that the observed radiated particle satisfied the same mass-to-charge ratio as the electron, discovered in 1897 by J.J Thompson\cite{Wikipedia-particle}. 
 
-Later experimental results showed that electrons observed as $\beta-$rays are emitted with a continuous range of kinetic energies up to a maximum value\cite{SMM}. 
-The discovery of a continuous distribution rather than a discrete predictable value for the electron kinetic energies led Wolfgang Pauli to propose in 1930 that the observed violations of energy, momentum and angular momentum conservation laws must be due emission of a yet unknown particle.
-In 1934 Enrico Fermi called this apparently massless and undetectable particle a "neutrino" and developed an advanced theory of beta decay based on it. The neutrino was finally experimentally observed 1956.\cite{Nave-beta} Due to symmetry considerations, the lepton emmited together with the electron during $\beta^{-}$ decay is called an antineutrino.
+Later experimental results showed that $\beta-$rays are detected with a continuous range of kinetic energies up to a maximum value\cite{SMM}. 
+The discovery of a continuous distribution of electron kinetic energies rather than a discrete predictable value led Wolfgang Pauli to propose in 1930 that the observed violation of conservation laws must be due emission of a yet unknown particle.
+
+In 1934 Enrico Fermi called this apparently massless and undetectable particle the "neutrino", developing an advanced theory of beta decay. The neutrino was finally experimentally observed 1956.\cite{Nave-beta} 
+
+% Due to symmetry considerations, the lepton emmited together with the electron during $\beta^{-}$ decay is called an antineutrino.
 
 The process we currently know as $\beta^{-}$ decay describes a neutron in a parent nucleus desintegrating into a proton in a daughter nucleus, an electron and an antineutrino.
 
@@ -38,19 +41,27 @@ The observable count of $\beta^{-}$electrons as a function of energy is now desc
 
 \section{Theory}
 
-In this experiment we measure the momentum spectrum of emitted $\beta-$rays from a radioactive source of \textsuperscript{137}Cs into an excited state of \textsuperscript{137}Ba. This transition occurs with a probability of $94.6\%$ with a maximum energy value of $T = 0.512$ MeV.\cite{SPA}.
+In this experiment we measure the momentum spectrum of emitted $\beta-$rays from a radioactive source of \textsuperscript{137}Cs into an excited state of \textsuperscript{137}Ba. This transition occurs with a probability of $94.6\%$ at a maximum energy value $T = 0.512$ MeV.\cite{SPA}.
 
 Our experimental apparatus is a thin magnetic-lens spectrometer. 
 The operation of $\beta$ spectrometers depends on the behaviour of electrons subject to magnetic fields. The magnetic field of the spectrometer lens is varied by changing the current passing though the lens coils.
-The effect of modifies a cone of electron trajectories diverging from the source, causing them to spiral around the axis of the instrument towards detector\cite{SPA}. 
+Modifying a cone of electron trajectories diverging from the source along the spectrometer's axis, causing them to spiral around the axis of the instrument towards detector\cite{SPA}. 
 The trajectories of the electrons are controlled in this way due to the magnetic force: 
 \begin{equation}\vec{F_{B}} = e^{-} \vec{v} \times \vec{B},
 \end{equation} 
 A set of electrons with a specific momentum range is focused onto the spectrometer detector, while electrons outside this range undergo chromatic aberration. 
 
-The momentum of the focused electrons is rigorously proportional to the magnetic field which, for our purposes is proportional to the adjustable current going through the lens coils. 
+The momentum of the focused electrons is rigorously proportional to the axially symmetric magnetic field.
+\begin{equation}p = e \rho B,
+\end{equation} 
+where $B$ is the magnetic field strength, $e$ is the electron charge, $\rho$ is the gyroradius of the particle due to B.
 
-It is important to note that the variability of the lens current $I_{lens}$ form the lens-coil arrangement is crucial to the experiment. In cases where the geometry of the magnetic field is axially symmetric\cite{QH} the magnetic rigidity $P$ satisfies:
+Given the lack of ferromagnetic materials, the magnetic field is proportional to the adjustable current $I_{lens}$ going through the lens coils.\cite{QH} 
+
+The magnetic rigidity $P$ is a measure of the momentum of the particle\cite{Wikipedia-Rigidity}:
+\begin{equation}P = B \rho,
+\end{equation}
+From this relation and the definition of the momentum above, we write:
 \begin{equation}P = kI_{lens},
 \end{equation}
 where k is a constant determined by the geometry of the spectrometer alone\cite{QH}.

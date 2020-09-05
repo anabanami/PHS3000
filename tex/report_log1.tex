@@ -19,13 +19,11 @@ The detected momentum of the radiated electrons is defined by the spectrometer's
 
 \section{Introduction}
 \begin{multicols}{2}
-When Henri Becquerel first observed $\beta-$radiation, he determined that the observed radiated particle satisfied the same mass-to-charge ratio as the electron, the particle that J.J Thompson had discovered in 1897. 
+When Henri Becquerel first observed $\beta-$radiation, he determined that the observed radiated particle satisfied the same mass-to-charge ratio as the electron, discovered in 1897 by J.J Thompson\cite{Wikipedia-particle}. 
 
 Later experimental results showed that electrons observed as $\beta-$rays are emitted with a continuous range of kinetic energies up to a maximum value\cite{SMM}. 
-The discovery of a continuous distribution rather than a discrete predictable value for the electron kinetic energies took physicists by surprise since it violates energy, momentum and angular momentum conservation laws.
-
-It was in fact this counterintuitive result which led Wolfgang Pauli to propose in 1930 that the observed anomalies must be due emission of a yet unknown particle.
-In 1934 Enrico Fermi called this massless and undetectable particle a "neutrino" and developed an advanced theory of beta decay based on it, but the neutrino was not experimentally observed until much later in 1956.\cite{Nave-beta} Due to symmetry considerations, the lepton emmited together with the electron during $\beta^{-}$ decay is called an antineutrino.
+The discovery of a continuous distribution rather than a discrete predictable value for the electron kinetic energies led Wolfgang Pauli to propose in 1930 that the observed violations of energy, momentum and angular momentum conservation laws must be due emission of a yet unknown particle.
+In 1934 Enrico Fermi called this apparently massless and undetectable particle a "neutrino" and developed an advanced theory of beta decay based on it. The neutrino was finally experimentally observed 1956.\cite{Nave-beta} Due to symmetry considerations, the lepton emmited together with the electron during $\beta^{-}$ decay is called an antineutrino.
 
 The process we currently know as $\beta^{-}$ decay describes a neutron in a parent nucleus desintegrating into a proton in a daughter nucleus, an electron and an antineutrino.
 
@@ -36,28 +34,48 @@ The avalilable kinetic energy of the system is equal to the decrease in mass ene
 \begin{equation}T = w - m c^2,
 \end{equation} where $m$ is the difference in mass between the daughter and parent nuclides.
 
-The observable count of $\beta^{-}$electrons as a function of energy is now described by the Kurie--Fermi Theory of $\beta^{-}$decay. The theory defines the distribution of the available nuclear desintegration energy to be carried-off as kinetic energy by both leptons. The observed maximum value in the Kurie--Fermi plot represents the count of electrons that take carry-off the maximum possible kinetic energy whilst the antineutrinos carry close to zero kinetic energy from the transition.
+The observable count of $\beta^{-}$electrons as a function of energy is now described by the Kurie--Fermi Theory of $\beta^{-}$decay.
 
- % The spectrum is a direct result of the varying (?) mass of the antineutrino.
+\section{Theory}
 
-\section{$\beta$ decay theory}
+In this experiment we measure the momentum spectrum of emitted $\beta-$rays from a radioactive source of \textsuperscript{137}Cs into an excited state of \textsuperscript{137}Ba. This transition occurs with a probability of $94.6\%$ with a maximum energy value of $T = 0.512$ MeV.\cite{SPA}.
 
-In this experiment we measure the momentum spectrum of emitted $\beta-$rays from a radioactive source of  \textsuperscript{137}Cs.
- \textsuperscript{137}Cs decays to an excited state of \textsuperscript{137}Ba. This transition occurs with a probability of $94.6\%$\cite{SPA}. The maximum energy value of this decay event is known to be $T = 0.512$ MeV.
-
-Our experimental apparatus is a thin magnetic lens spectrometer. The operation of $\beta$ spectrometers depends on the behaviour of electrons subject to magnetic fields. The magnetic field of the spectrometer lens is varied by changing the current passing though the lens coils which has the effect of modifying the trajectories of the electrons by the Lorentz force,
-\begin{equation}\vec{F} = e^{-} \vec{v} \times \vec{B}
+Our experimental apparatus is a thin magnetic-lens spectrometer. 
+The operation of $\beta$ spectrometers depends on the behaviour of electrons subject to magnetic fields. The magnetic field of the spectrometer lens is varied by changing the current passing though the lens coils.
+The effect of modifies a cone of electron trajectories diverging from the source, causing them to spiral around the axis of the instrument towards detector\cite{SPA}. 
+The trajectories of the electrons are controlled in this way due to the magnetic force: 
+\begin{equation}\vec{F_{B}} = e^{-} \vec{v} \times \vec{B},
 \end{equation} 
- The result is a set of electrons focused onto the spectrometer detector all with a specific range momenta (other electrons in the momentum spectrum undergo chromatic aberration)
+A set of electrons with a specific momentum range is focused onto the spectrometer detector, while electrons outside this range undergo chromatic aberration. 
 
-% determine the total energy released by one of the nuclear transitions.~\cite{SPA}.
+The momentum of the focused electrons is rigorously proportional to the magnetic field which, for our purposes is proportional to the adjustable current going through the lens coils. 
+
+It is important to note that the variability of the lens current $I_{lens}$ form the lens-coil arrangement is crucial to the experiment. In cases where the geometry of the magnetic field is axially symmetric\cite{QH} the magnetic rigidity $P$ satisfies:
+\begin{equation}P = kI_{lens},
+\end{equation}
+where k is a constant determined by the geometry of the spectrometer alone\cite{QH}.
+\subsection{Calibration}
+Calibrating the observed momentum distribution requires us to use electrons that are emitted with a characteristic well-defined kinetic energy known as conversion electrons\cite{SPA}.
+
+In this experiment we study the most probable energy transition from \textsuperscript{137}Cs to \textsuperscript{137}Ba.
+The daughter nucleus in this scenario is in an excited state. One way for the atom to lose energy is by transferring the excess energy directly to an orbital electron\cite{SPA}.
+The orbital will most likely be the K-shell since it is the lowest energy orbital. A higher energy group event is much rarer with a probability of $6\%$. Therefore little error is made  by assuming that the peak is due to the K line only.\cite{SPA}.
+
+The constant $k$ in (3) is determined by calibrating the observed spectrum to the well-known K-conversion peak with kinetic energy $T = 624.21$ keV.
+
+
+The resolution of the spectrometer used in this experiment is constant $(2-3\%)$. 
+%MORE ON RESOLUTION TBA
 
 
 
-% Measurements of the energies and intensities of $\beta$-rays are important in the investigation 
+% HOW HOW WHY GIVE ME MATHS
 
 
-% of \textsuperscript{137}Cs.
+% [9] The use of coordinates of momentum instead of energy in β-ray spectroscopy is partly due to the simple fact that it is the momentum of the focused electrons that is proportional to the magnetic field of the spectrometer or (approximately, if iron is used) to the exciting electric current, and not the energy.
+
+% [9] Suppose that we investigate a distribution of electrons in a magnetic spectrometer,
+% the momentum distribution being N(p)dp. ... In a magnetic spectrometer with fixed geometry and variable B the quantity R = ∆(Bρ)/Bρ is constant, where ∆(Bρ) is a measure of the accepted momentum band. When plotting the momentum distribution it is therefore necessary to divide the number of counts P at each magnetic field setting by the corresponding field in order to get the correct form of the spectrum
 
 
 \end{multicols}
@@ -67,13 +85,7 @@ Our experimental apparatus is a thin magnetic lens spectrometer. The operation o
 
 
 
-% the effect of the magnetic field being to cause a cone of electron trajectories diverging from the source to spiral around the axis of the instrument and become a cone converging on to the detector
+% The observed maximum value in the Kurie--Fermi plot represents the count of electrons that take the maximum possible kinetic energy whilst the antineutrinos carry close to zero kinetic energy from the transition.
 
+% The spectrum is a direct result of the varying (?) mass of the antineutrino.
 
-% The constant $k$ is determined by calibrating the observed spectrum to the well-known K-conversion peak with kinetic energy $T = 624.21$ keV.
-
-
-% [9] The use of coordinates of momentum instead of energy in β-ray spectroscopy is partly due to the simple fact that it is the momentum of the focused electrons that is proportional to the magnetic field of the spectrometer or (approximately, if iron is used) to the exciting electric current, and not the energy.
-
-% [9] Suppose that we investigate a distribution of electrons in a magnetic spectrometer,
-% the momentum distribution being N(p)dp. ... In a magnetic spectrometer with fixed geometry and variable B the quantity R = ∆(Bρ)/Bρ is constant, where ∆(Bρ) is a measure of the accepted momentum band. When plotting the momentum distribution it is therefore necessary to divide the number of counts P at each magnetic field setting by the corresponding field in order to get the correct form of the spectrum

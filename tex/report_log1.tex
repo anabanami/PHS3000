@@ -26,8 +26,6 @@ The discovery of a continuous distribution of electron kinetic energies rather t
 
 In 1934 Enrico Fermi called this apparently massless and undetectable particle the "neutrino", developing an advanced theory of beta decay. The neutrino was finally experimentally observed 1956.\cite{Nave-beta} 
 
-% Due to symmetry considerations, the lepton emmited together with the electron during $\beta^{-}$ decay is called an antineutrino.
-
 The process we currently know as $\beta^{-}$ decay describes a neutron in a parent nucleus desintegrating into a proton in a daughter nucleus, an electron and an antineutrino.
 
 In a $\beta^{-}$event, both nuclides (nuclear species) have the same number of nucleons. This means that the daughter nucleus will not experience a substantial change in kinetic energy (recoil) due to the decay event. Leaving most of the desintegration energy available to be carried-off by the leptons as kinetic energy. 
@@ -36,64 +34,171 @@ A parent nucleus has a given initial energy $w$.
 The avalilable kinetic energy of the system is equal to the decrease in mass energy due to the creation of the radiated leptons:
 \begin{equation}T = w - m c^2,
 \end{equation} where $m$ is the difference in mass between the daughter and parent nuclides.
+In relativistic units:
+\begin{equation}T = w - 1,
+\end{equation}
 
-The observable count of $\beta^{-}$electrons as a function of energy is now described by the Kurie--Fermi Theory of $\beta^{-}$decay.
+The observable count of $\beta^{-}$electrons $n$ as a function of energy is described by the Kurie--Fermi Theory of $\beta^{-}$decay.
 
 \section{Theory}
 
 In this experiment we measure the momentum spectrum of emitted $\beta-$rays from a radioactive source of \textsuperscript{137}Cs into an excited state of \textsuperscript{137}Ba. This transition occurs with a probability of $94.6\%$ at a maximum energy value $T = 0.512$ MeV.\cite{SPA}.
 
+A set of electrons with a specific momentum range is focused onto the spectrometer detector, while electrons outside this range undergo chromatic aberration. 
+
+The use of coordinates of momentum instead of energy in $\beta-$ray spectroscopy is partly due to the fact that it is the momentum of the focused electrons that is rigorously proportional to the axially symmetric magnetic field.\cite{QH, Siegbahn} 
+In our experimental setup, the magnetic field is proportional to the adjustable current $I_{lens}$ going through the lens coils.
+The definition for the momentum of emitted electrons is:
+\begin{equation}p = e \rho B,
+\end{equation} 
+where $B$ is the magnetic field strength, $e$ is the electron charge, $\rho$ is the gyroradius of the electrons due to B.
+
+The magnetic rigidity $P$ is a measure of the momentum of electrons\cite{Wikipedia-Rigidity}:
+\begin{equation}P = B \rho,
+\end{equation}
+
+From this relation and the above definition of the momentum of electrons, we write:
+\begin{equation}p = kI_{lens},
+\end{equation}
+k is a constant determined by the geometry of the spectrometer alone\cite{QH}.
+\subsection{Calibration}
+To calibrate the observed momentum distribution electrons emitted with a characteristic well-defined kinetic energy\cite{SPA}.
+These electrons are named conversion electrons.
+In this experiment we study the most probable energy transition from \textsuperscript{137}Cs to \textsuperscript{137}Ba.
+In this scenario \textsuperscript{137}Ba is in an excited state. 
+One way for the daughter atom to lose energy is by transferring the excess energy directly to an orbital electron\cite{SPA}.
+
+The orbital will most likely be the K-shell since it is the lowest energy orbital. A higher energy group event is much rarer (probability of $6\%$), therefore little error is made  by assuming that the peak is due to the K line only.\cite{SPA}.
+
+The constant $k$ in (3) is determined by calibrating the observed spectrum to the well-known K-conversion peak with kinetic energy $T = 624.21$ keV.
+ 
+In relativistic units, the calibration calculation is as follows:
+\begin{equation}T = w - 1,
+\end{equation}
+in terms of the momentum $p_k$
+\begin{equation}T_k = \sqrt{{p_{k}}^{2} + 1} -1,
+\end{equation}
+\begin{equation} \therefore p_k = \sqrt{({T_{k} + 1)}^{2} - 1 },
+\end{equation}
+from equation (5)
+\begin{equation} \therefore k I_k = \sqrt{({T_{k} + 1)}^{2} - 1 },
+\end{equation}
+\begin{equation} \therefore k = \frac{\sqrt{({T_{k} + 1)}^{2} - 1 }}{I_k},
+\end{equation}
+is the proportionality constant we are after.
+
+\section{Experimental method}
 Our experimental apparatus is a thin magnetic-lens spectrometer. 
 The operation of $\beta$ spectrometers depends on the behaviour of electrons subject to magnetic fields. The magnetic field of the spectrometer lens is varied by changing the current passing though the lens coils.
 Modifying a cone of electron trajectories diverging from the source along the spectrometer's axis, causing them to spiral around the axis of the instrument towards detector\cite{SPA}. 
-The trajectories of the electrons are controlled in this way due to the magnetic force: 
-\begin{equation}\vec{F_{B}} = e^{-} \vec{v} \times \vec{B},
-\end{equation} 
-A set of electrons with a specific momentum range is focused onto the spectrometer detector, while electrons outside this range undergo chromatic aberration. 
 
-The momentum of the focused electrons is rigorously proportional to the axially symmetric magnetic field.
-\begin{equation}p = e \rho B,
-\end{equation} 
-where $B$ is the magnetic field strength, $e$ is the electron charge, $\rho$ is the gyroradius of the particle due to B.
 
-Given the lack of ferromagnetic materials, the magnetic field is proportional to the adjustable current $I_{lens}$ going through the lens coils.\cite{QH} 
+% DO I DESCRIBE THE PPOTENTIAL PROBLEMS FROM EXTERNAL MAGNETIC FIELDS?
 
-The magnetic rigidity $P$ is a measure of the momentum of the particle\cite{Wikipedia-Rigidity}:
-\begin{equation}P = B \rho,
+
+
+% 6.1 I think you've not completely answered this question. While the spec. is aligned parallel to the horizontal comp.of the Earth's B-field, what of the vertical component? What effect does that have? How can you nullify itseffects?
+
+
+
+
+% 10.1 Why does this makes sense? (hint a pair of Helmholtz coil generates uniform magnetic fied in one directiononly. How many pairs do we have?) Also, why provide the ability to change the B field in only 1 direction? 
+
+
+
+
+% BACKGROUND RADIATION
+% how do you determine what is a acceptable level for your background measurement?
+
+
+
+% CONSTANT TIME VS CONSTANT COUNTS
+% 7.2 While what you've said is not wrong, it doesn't really discount the use of using the constant counts method. In particular, you are given a hint to consider the fractional uncertainty of these points, by using constant counts,you can sort of pre-determine what level of fractional uncertainty you want for a data point. There are also obvious constraints, time alloted for the experiments. You could have also considered doing a combination of constant counts and constant time. These things are worthy of discussion.
+
+
+\subsection{Resolution}
+In a magnetic spectrometer with fixed geometry and variable $B$ the resolution 
+\begin{equation}R = \frac{\Delta(B \rho)}{B \rho},
 \end{equation}
-From this relation and the definition of the momentum above, we write:
-\begin{equation}P = kI_{lens},
-\end{equation}
-where k is a constant determined by the geometry of the spectrometer alone\cite{QH}.
-\subsection{Calibration}
-Calibrating the observed momentum distribution requires us to use electrons that are emitted with a characteristic well-defined kinetic energy known as conversion electrons\cite{SPA}.
+is constant (in this experiment $R = (2-3\%)$). 
+Where $\Delta(B \rho)$ is a measure of the accepted momentum band ($\Delta p$). 
+When plotting the momentum distribution it is necessary to divide the number of counts n(p) at each current setting by the corresponding current in order to get the correct form of the spectrum\cite{Siegbahn}.
 
-In this experiment we study the most probable energy transition from \textsuperscript{137}Cs to \textsuperscript{137}Ba.
-The daughter nucleus in this scenario is in an excited state. One way for the atom to lose energy is by transferring the excess energy directly to an orbital electron\cite{SPA}.
-The orbital will most likely be the K-shell since it is the lowest energy orbital. A higher energy group event is much rarer with a probability of $6\%$. Therefore little error is made  by assuming that the peak is due to the K line only.\cite{SPA}.
+%MORE ON RESOLUTION TBA?
+% \subsection{Experimental control interface}
+% The control interface for the beta-ray experiment is comprised of 6 sections:
+% \begin{enumerate}
+% \item Vaccum system monitor (vacuum gauge is currently disconnected)
+% \item Power supply controls 
+%     Used to adjust the coil power supplies (lens coil and bias coil currents)
+% \item Magnetometer controls
+%     Used to specify magnetic probe coordinates and display a 3-axis measurement of the magnetic field.
+% \item Shutter controls
+%     open or close the shielding of the radioactive source 
+% \item Counting Controls
+%     User defined parameters for data acquisition. 
+% \item Acquired data display table
+%     Note: the apparatus automatically records the acquired data as a CSV file.
+%     Below the table is a link to download a csv file containing the tabulated data.
+% \end{enumerate}
 
-The constant $k$ in (3) is determined by calibrating the observed spectrum to the well-known K-conversion peak with kinetic energy $T = 624.21$ keV.
+\subsection{Experimental procedure}
+Firstly, Decide what range and increments of lens current are adequate to resolve the momentum spectrum.
+Then, using the experimental control interface:
+\begin{enumerate}
+\item Calibrate the magnetic field probe.
+    Coordinates of the probe must be set to: $(400,190)$
+\item Null Earth's magnetic field:
+    Disable the lens current.
+    Enable the bias coil current and increase this current until all displayed field values are as close to zero as possible. 
+    Note: (the x-component of the field will remain large compared to the other components.)
+\item Set counting controls to either constant time or constant counts.
+    Specify time interval or expected counts.
+\item Background rate count:
+    Close the source shutter.
+    With the lens current disabled, proceed to run the experiment and count the background radiation (repeat this step 4 times).
+\end{enumerate}
+\subsection{Data acquisition}
+\begin{enumerate}
+\item Set the shutter status to open.
+\item Enable the lens coil current.
+\item Run the experiment.
+\item Increase the lens coil current.
+\item Repeat previous steps until reaching the max coil current.
+\end{enumerate}
+\section{Results}
+
+% 20.3 You should show the explicit calculation for the u in the background counts here since it's  a small dataset. For every uncertainty, you should show an explicit calculation (i.e. using numbers on paper) as an example for each data set.
 
 
-The resolution of the spectrometer used in this experiment is constant $(2-3\%)$. 
-%MORE ON RESOLUTION TBA
+
+We decided that our range will be from $0$A to $3.6$A in increments of $0.1A$.  Our counting controls were set to constant time: $360$s.
+The 4 background counts we measured are averaged and used to correct the measured counts of the experiment.
+
+blah blah like this...
 
 
 
-% HOW HOW WHY GIVE ME MATHS
+
+% 20.2 This uncertainty to me is very small. This is because, you took the maximum value. What if you fit the K-peakwith a Lorentzian or Gaussian to extract the max? I doubt your uncertainty will be that unbelievably small ...
 
 
-% [9] The use of coordinates of momentum instead of energy in β-ray spectroscopy is partly due to the simple fact that it is the momentum of the focused electrons that is proportional to the magnetic field of the spectrometer or (approximately, if iron is used) to the exciting electric current, and not the energy.
 
-% [9] Suppose that we investigate a distribution of electrons in a magnetic spectrometer,
-% the momentum distribution being N(p)dp. ... In a magnetic spectrometer with fixed geometry and variable B the quantity R = ∆(Bρ)/Bρ is constant, where ∆(Bρ) is a measure of the accepted momentum band. When plotting the momentum distribution it is therefore necessary to divide the number of counts P at each magnetic field setting by the corresponding field in order to get the correct form of the spectrum
+% 21.1 Honestly, there are only 2 data points for your K peak ... I'm not confident in your finding of the k constant of proportionality. I hope you comment on this weakness.
+
+
+
+% you have not corrected for the spectrometer resolution.
+
+
+
+% Bring the S_n factor to the LHS so that you have: (n/p*w*G*S)^(1/2) = K*(w_0 -w). Now, you could use your obtained w_0 value for when S = 1 into this expression. Then repeat the previous analysis. You should obtain a new w_0 value. What if you continue this process? Eventually, the w_0 value you put in will be the same as the one you get out as the x-uncertainty. Youshould do this for the report.
 
 
 \end{multicols}
 \bibliography{mybib}
 \bibliographystyle{unsrt}
 \end{document}
-
 
 
 % The observed maximum value in the Kurie--Fermi plot represents the count of electrons that take the maximum possible kinetic energy whilst the antineutrinos carry close to zero kinetic energy from the transition.

@@ -68,6 +68,10 @@ def compute_k(lens_current):
     # defining appropriate uncertainty for our k peak
     u_I_k = 0.1 / 2
     u_k = k * (u_I_k / lens_current[20])
+    # print(f'{T_K=:.3f} mc^2')
+    print(f'{k=:.3f}')
+    print(f'{u_I_k=:.3f}')
+    print(f'{u_k=:.3f}')
     return k, u_k
 
 def compute_p_rel(lens_current, k, u_k):
@@ -109,7 +113,15 @@ def correct_count(background_count_data):
 
     # As per Siegbahn [9] correction for spectrometers resolution
     correct_count = background_corrected_count / lens_current
-    u_correct_count = np.sqrt((u_background_corrected_count / background_corrected_count)**2 + (u_lens_current / lens_current)**2)
+    u_correct_count = correct_count * np.sqrt((u_background_corrected_count / background_corrected_count)**2 + (u_lens_current / lens_current)**2)
+    
+    print(f'\n{total_background=:.0f}')
+    print(f'{avg_background_count=:.0f}')
+    print(f'{u_avg_background_count=:.0f}')
+
+    print(f'\ncorrect counts:{correct_count}')
+    print(f'uncertainty:{u_correct_count}')
+
     return correct_count, u_correct_count
 
 def f(x, m, c):
@@ -224,6 +236,8 @@ T, u_T, yn, u_yn, optimised_fit, u_f = iterative_solve(x, opt_w_0, u_opt_w_0)
 compare(T, u_T)
 
 ############################ plots ############################
+
+
 # OPTIMISED FIT PLOT and residuals plot
 plt.figure()
 plt.errorbar(
@@ -261,5 +275,5 @@ plt.xlabel(r"$w [mc^{2}]$")
 plt.ylabel(r"$\left ( \frac{n}{p w G} \right )^{\frac{1}{2}}$", rotation=0, labelpad=18)
 plt.legend()
 # spa.savefig('linear_residuals_Kurie_linear_data.png')
-plt.show()
+# plt.show()
 ############################ plots ############################

@@ -9,7 +9,7 @@
 \title{Measurement of $\beta$-ray spectra}
 \author{Ana C. Fabela Hinojosa\\
 \small{School of Physics and Astronomy, Monash University}}
-\date{Experiment performed: Tuesday 18\textsuperscript{th} August, 2020}
+\date{Experiment performed: Tuesday 18\textsuperscript{th} August, 2020, \\ Submitted: \today}
 \begin{document}
 \maketitle
 \begin{abstract}
@@ -40,7 +40,7 @@ In relativistic units:
 
 The observable count of $\beta^{-}$electrons $n$ as a function of energy is described by the Kurie--Fermi Theory of $\beta^{-}$decay.
 
-\section{Theory}
+\section{Background Theory}
 
 In this experiment we measure the momentum spectrum of emitted $\beta-$rays from a radioactive source of \textsuperscript{137}Cs into an excited state of \textsuperscript{137}Ba. This transition occurs with a probability of $94.6\%$ at a maximum energy value $T = 0.512$ MeV.\cite{SPA}.
 
@@ -61,16 +61,15 @@ From this relation and the above definition of the momentum of electrons, we wri
 \begin{equation}p = kI_{lens},
 \end{equation}
 k is a constant determined by the geometry of the spectrometer alone\cite{QH}.
-\subsection{Calibration}
-To calibrate the observed momentum distribution electrons emitted with a characteristic well-defined kinetic energy\cite{SPA}.
+\subsection{K-peak Calibration}
+To calibrate the observed momentum distribution we use electrons emitted with a characteristic well-defined kinetic energy\cite{SPA}.
 These electrons are named conversion electrons.
-In this experiment we study the most probable energy transition from \textsuperscript{137}Cs to \textsuperscript{137}Ba.
-In this scenario \textsuperscript{137}Ba is in an excited state. 
+In this experiment we study the most probable energy transition from \textsuperscript{137}Cs to \textsuperscript{137}Ba. in this transition \textsuperscript{137}Ba is in an excited state. 
 One way for the daughter atom to lose energy is by transferring the excess energy directly to an orbital electron\cite{SPA}.
 
 The orbital will most likely be the K-shell since it is the lowest energy orbital. A higher energy group event is much rarer (probability of $6\%$), therefore little error is made  by assuming that the peak is due to the K line only.\cite{SPA}.
 
-The constant $k$ in (3) is determined by calibrating the observed spectrum to the well-known K-conversion peak with kinetic energy $T = 624.21$ keV.
+The constant $k$ in (3) is determined by calibrating the observed spectrum to the well-known K-conversion peak with kinetic energy $T_k = 624.21$ keV.
  
 In relativistic units, the calibration calculation is as follows:
 \begin{equation}T = w - 1,
@@ -87,34 +86,37 @@ from equation (5)
 \end{equation}
 is the proportionality constant we are after.
 
+\subsection{Kurie-Fermy theory}
+
+lorem ipsum
+
 \section{Experimental method}
 Our experimental apparatus is a thin magnetic-lens spectrometer. 
-The operation of $\beta$ spectrometers depends on the behaviour of electrons subject to magnetic fields. The magnetic field of the spectrometer lens is varied by changing the current passing though the lens coils.
+The operation of $\beta$ spectrometers depends on the behaviour of electrons subject to magnetic fields. 
+
+The spectrometer is aligned parallel to the horizontal component of the Earth's magnetic field, whilst 
+% what of the vertical component?
+% What effect does that have? How can you nullify its effects?
+% Why does this makes sense? (hint: a pair of Helmholtz coil generates uniform magnetic fied in one directiononly. How many pairs do we have?) Also, why provide the ability to change the B field in only 1 direction? 
+
+The magnetic field of the spectrometer lens is varied by changing the current passing though the lens coils.
 Modifying a cone of electron trajectories diverging from the source along the spectrometer's axis, causing them to spiral around the axis of the instrument towards detector\cite{SPA}. 
 
-
-% DO I DESCRIBE THE PPOTENTIAL PROBLEMS FROM EXTERNAL MAGNETIC FIELDS?
-
-
-
-% 6.1 I think you've not completely answered this question. While the spec. is aligned parallel to the horizontal comp.of the Earth's B-field, what of the vertical component? What effect does that have? How can you nullify itseffects?
-
-
-
-
-% 10.1 Why does this makes sense? (hint a pair of Helmholtz coil generates uniform magnetic fied in one directiononly. How many pairs do we have?) Also, why provide the ability to change the B field in only 1 direction? 
-
-
-
-
-% BACKGROUND RADIATION
+\subsection{Background radiation}
 % how do you determine what is a acceptable level for your background measurement?
 
+\subsection{constant time vs constant counts}
+The counting controls of the experimental apparatus can be defined by the user.
+For constant time, the best estimation for the uncertainty in the number of counts $n$ is $\sqrt{n}$\cite{SPA} due to the poissonian nature of radioactive decay. 
+The fractional uncertainty in counts is $\frac{\sqrt{n}}{n} = \frac{1}{\sqrt{n}}$
+Fractional uncertainty is a preserved quantity. Therefore the uncertainty in time
+is :$ \Delta t = \frac{t}{\sqrt{n}}$ 
 
-
-% CONSTANT TIME VS CONSTANT COUNTS
-% 7.2 While what you've said is not wrong, it doesn't really discount the use of using the constant counts method. In particular, you are given a hint to consider the fractional uncertainty of these points, by using constant counts,you can sort of pre-determine what level of fractional uncertainty you want for a data point. There are also obvious constraints, time alloted for the experiments. You could have also considered doing a combination of constant counts and constant time. These things are worthy of discussion.
-
+By using constant counts, we are able to pre-determine the fractional uncertainty for a data point. 
+An obvious constraint from choosing this method is that the alloted time for the experiments is not as easily monitored as with constant time. 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Since both have pros and cons, the best option is a combination of both counting methods.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Resolution}
 In a magnetic spectrometer with fixed geometry and variable $B$ the resolution 
@@ -125,22 +127,6 @@ Where $\Delta(B \rho)$ is a measure of the accepted momentum band ($\Delta p$).
 When plotting the momentum distribution it is necessary to divide the number of counts n(p) at each current setting by the corresponding current in order to get the correct form of the spectrum\cite{Siegbahn}.
 
 %MORE ON RESOLUTION TBA?
-% \subsection{Experimental control interface}
-% The control interface for the beta-ray experiment is comprised of 6 sections:
-% \begin{enumerate}
-% \item Vaccum system monitor (vacuum gauge is currently disconnected)
-% \item Power supply controls 
-%     Used to adjust the coil power supplies (lens coil and bias coil currents)
-% \item Magnetometer controls
-%     Used to specify magnetic probe coordinates and display a 3-axis measurement of the magnetic field.
-% \item Shutter controls
-%     open or close the shielding of the radioactive source 
-% \item Counting Controls
-%     User defined parameters for data acquisition. 
-% \item Acquired data display table
-%     Note: the apparatus automatically records the acquired data as a CSV file.
-%     Below the table is a link to download a csv file containing the tabulated data.
-% \end{enumerate}
 
 \subsection{Experimental procedure}
 Firstly, Decide what range and increments of lens current are adequate to resolve the momentum spectrum.
@@ -158,33 +144,83 @@ Then, using the experimental control interface:
     Close the source shutter.
     With the lens current disabled, proceed to run the experiment and count the background radiation (repeat this step 4 times).
 \end{enumerate}
-\subsection{Data acquisition}
+\subsection{Data acquisition algorithm}
 \begin{enumerate}
+\item Enable the lens coil current.    
 \item Set the shutter status to open.
-\item Enable the lens coil current.
 \item Run the experiment.
 \item Increase the lens coil current.
 \item Repeat previous steps until reaching the max coil current.
 \end{enumerate}
+
 \section{Results}
+% For every uncertainty, you should show an explicit calculation (i.e. using numbers on paper) as an example for each data set.
 
-% 20.3 You should show the explicit calculation for the u in the background counts here since it's  a small dataset. For every uncertainty, you should show an explicit calculation (i.e. using numbers on paper) as an example for each data set.
+The experimental parameters used are as follows:
+The lens current range is set from $0$A to $3.6$A
+Increments of $0.1A$ are chosen. 
+Counting controls were set to constant time: The intervals $t = 360$s.
+
+After we obtain the raw spectrum $n_{raw}$ as a function of the lens current. The first processing step is to correct our data from the background radiation count.
+The 4 measurements of the background radiation counts are added, and averaged. 
+\begin{equation} n_{b,avg} = \frac{685}{4} = 171,
+\end{equation}
+The uncertainty in the average background count is:
+\begin{equation} u(n_{b,avg}) = \frac{\sqrt{n_{b,avg}}}{4} = 7
+\end{equation}
+Here we have converted the calculated values to the closest integer values.
+The average background count $n_{b,avg}$ is then subtracted from the measured data $n(I)$. We chose the uncertainty in the raw count to be: $u(n_{raw}) = 15$.
+Then, the uncertainty in the background corrected data is:
+\begin{equation} u(n(I)) = \sqrt{u(n_{b,avg})^2 + u(n_{raw})^2}
+\end{equation}
+
+As per section 3.3, we must also correct the count for the spectrometers resolution.
+\begin{equation} n(I) = \sqrt{u(n_{b,avg})^2 + u(n_{raw})^2}
+\end{equation}
+
+\begin{equation} u(n(I)) = \sqrt{u(n_{b,avg})^2 + u(n_{raw})^2}
+\end{equation}
+%     correct_count = background_corrected_count / lens_current
+%     u_correct_count = np.sqrt((u_background_corrected_count / background_corrected_count)**2 + (u_lens_current / lens_current)**2)
+%     return correct_count, u_correct_count
 
 
 
-We decided that our range will be from $0$A to $3.6$A in increments of $0.1A$.  Our counting controls were set to constant time: $360$s.
-The 4 background counts we measured are averaged and used to correct the measured counts of the experiment.
-
-blah blah like this...
 
 
+We now calibrate the spectrum by using the conversion peak energy $T_k$
+
+Firstly, since there are only 2 data points visible in our conversion peak, it is unlikely that we have found the true value for the corresponding current $I_k$ to the K-peak.
+
+We perfom a lorentzian fit on the K-peak in order to find a good estimate of the true peak $n(I_k)$ value.
+
+% \begin{figure}\begin{center}
+% \includegraphics[width=0.5\linewidth]{lorentzian_fit.png}}\end{center}
+% \caption{}\label{fig:setup}
+% \end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+We proceed to find the constant of proportionality in $p = kI$ using equation $(10)$.
+
+We convert $T_k$ into relativistic units  $T_k = 1.22$ $mc^2$
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % I_k = lens_current[20] 
+
+% FIX THISSSSSS% 
+From equation $(10)$ we find $k = 1.049$. We define the uncertainty value for $I_k: u(I_k) = \frac{0.1}{2}$ since we estimated the true location of our peak based on a curve fit. The uncertainty in $k$ is: 
+\begin{equation} u(k) = k \frac{u(I_k)}{I_k} = 0.03
+\end{equation} 
 
 
-% 20.2 This uncertainty to me is very small. This is because, you took the maximum value. What if you fit the K-peakwith a Lorentzian or Gaussian to extract the max? I doubt your uncertainty will be that unbelievably small ...
+
+
+% \begin{figure}\begin{center}
+% \includegraphics[width=0.5\linewidth]{lorentzian_fit.png}}\end{center}
+% \caption{}\label{fig:setup}
+% \end{figure}
 
 
 
-% 21.1 Honestly, there are only 2 data points for your K peak ... I'm not confident in your finding of the k constant of proportionality. I hope you comment on this weakness.
 
 
 

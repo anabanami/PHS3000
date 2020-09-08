@@ -1,20 +1,26 @@
 % latexmk -pvc -pdf
 \documentclass[10pt, a4paper]{article}
-\usepackage[margin=1in]{geometry}
+\usepackage[margin=0.7in]{geometry}
 \usepackage{multicol}
 \usepackage{amsmath,amsthm,amsfonts,amssymb}
 \usepackage[english]{babel}
 \usepackage{blindtext}
+\usepackage{caption}
+\usepackage{graphicx}
+\newenvironment{Figure}
+    {\par\medskip\noindent\minipage{\linewidth}}
+    {\endminipage\par\medskip}
 
 \title{Measurement of $\beta$-ray spectra}
-\author{Ana C. Fabela Hinojosa\\
+\author{Ana C. Fabela Hinojosa
 \small{School of Physics and Astronomy, Monash University}}
-\date{Experiment performed: Tuesday 18\textsuperscript{th} August, 2020, \\ Submitted: \today}
+\date{Experiment performed: Tuesday 18\textsuperscript{th} August, 2020,  Submitted: \today}
+
 \begin{document}
 \maketitle
 \begin{abstract}
 Using a thin lens magnetic spectrometer, we measure the momentum spectrum of electrons emitted as $\beta^{-}$ rays from a radioactive source of \textsuperscript{137}Cs. 
-The detected momentum of the radiated electrons is defined by the spectrometer's adjustable magnetic lens current and $k$ a proportionality constant dependent on the geometry of the apparatus. The magnetic field of the lens is varied by changing the current passing though the lens coil which has the effect of modifying the trajectories of the electrons, focusing electrons with specific momenta onto the detector allowing us to measure their intensity. By converting the measured momentum to energy we are able to fit our data to a linear model based on the Fermi-Kurie plot. We find that the value of the kinetic energy of the nuclear transition is $T = 0.520 \pm 0.044$ MeV which is in agreement with the accepted value of $T = 0.512$ MeV\cite{SPA}.
+The detected momentum of the radiated electrons is defined by the spectrometer's adjustable magnetic lens current and $k$ a proportionality constant dependent on the geometry of the apparatus. The magnetic field of the lens is varied by changing the current passing though the lens coil which has the effect of modifying the trajectories of the electrons, focusing electrons with specific momenta onto the detector allowing us to measure their intensity. By converting the measured momentum to energy we are able to fit our data to a linear model based on the Fermi-Kurie plot. We find that the value of the kinetic energy of the nuclear transition is $T = 0.514 \pm 0.05$ MeV which is in agreement with the accepted value of $T = 0.512$ MeV\cite{SPA}.
 \end{abstract}
 
 \section{Introduction}
@@ -61,7 +67,9 @@ From this relation and the above definition of the momentum of electrons, we wri
 \begin{equation}p = kI_{lens},
 \end{equation}
 k is a constant determined by the geometry of the spectrometer alone\cite{QH}.
+
 \subsection{K-peak Calibration}
+
 To calibrate the observed momentum distribution we use electrons emitted with a characteristic well-defined kinetic energy\cite{SPA}.
 These electrons are named conversion electrons.
 In this experiment we study the most probable energy transition from \textsuperscript{137}Cs to \textsuperscript{137}Ba. in this transition \textsuperscript{137}Ba is in an excited state. 
@@ -80,53 +88,92 @@ in terms of the momentum $p_k$
 \begin{equation} \therefore p_k = \sqrt{({T_{k} + 1)}^{2} - 1 },
 \end{equation}
 from equation (5)
-\begin{equation} \therefore k I_k = \sqrt{({T_{k} + 1)}^{2} - 1 },
+\begin{equation} k I_k = \sqrt{({T_{k} + 1)}^{2} - 1 },
 \end{equation}
 \begin{equation} \therefore k = \frac{\sqrt{({T_{k} + 1)}^{2} - 1 }}{I_k},
 \end{equation}
 is the proportionality constant we are after.
 
-\subsection{Kurie-Fermy theory}
+\subsection{Kurie--Fermi theory}
 
-lorem ipsum
+The standard method for determining end-points of $beta-$ray groups and for examining the degree of forbidden-ness of the transitions\cite{SPA} is known as the Kurie plot. The observed maximum value in the Kurie--Fermi plot represents the count of electrons that take the maximum possible kinetic energy whilst the antineutrinos carry close to zero kinetic energy from the transition.
 
-\section{Experimental method}
+The Kurie--Fermi plot may be written as: 
+\begin{equation} n(p) = K_1 F(Z, w) p^2(w_0 - w^2) S_n(w),
+\end{equation}
+where $K_1$ is an arbitrary constant, $p$ is the electron's momentum, $F(Z, w)$ is the Fermi function (which accounts for coulomb attraction between the electron and the daughter nuclleus). $Z$ is the charge of the daughter nucleus, $w_0$ is the decay energy, and $w$ is the total transition energy and $S_n(w)$ is known as the shape factor. 
+
+In our analysis we use a modified Fermi function: 
+$G = \frac{p F(Z=55, w)}{w}$. We find The value of this function using an interpolation method based on a data set provided in the aditional resources of the experimental script.
+
+In order to use this relation to obtain the transition energy, we are told linearise the Kurie plot. 
+Written in terms of the interpolated fermi function, we write the linear kurie plot as:
+\begin{equation} \sqrt{\frac{n(p)}{p^2 w G S_n(w)}}= K_2 (w_0 - w)^2,
+\end{equation}
+
+The shape factor alters the shape of the spectrum depending on the level of “forbiddeness” of a transition. It is determined by the amount of orbital angular momentum, $L$, carried away by the electron-neutrino pair, as well as their linear momenta)\cite{NERS312}.
+
+We obtain an expression for the shape factor from Siegbahn, reference\cite{Siegbahn}:
+\begin{equation} S_n = w^2 - 1 + (w_n - w)^2,
+\end{equation} 
+
+The shape factor increases the precision of the result as the order icreases. The zeroth order linear Kurie plot is found by calculating
+\begin{equation} \sqrt{\frac{n(p)}{p^2 w G}}= K_2 (w_0 - w)^2,
+\end{equation}
+where the transition is allowed: $S_0(w) = 1.$
+
+We proceed to find the zeroth order energy transition $w_0$ 
+\begin{equation} w_0 = \frac{c}{-K_2},
+\end{equation}
+After we have obtained $w_0$ we can iteratively repeat the previous analysis. 
+From this we obtain higher order $w_n$ and $S_n$ values. We use the results from the iteration to find a convergent value for $T$ the transition energy.
+
+
+\section{Method}
+
 Our experimental apparatus is a thin magnetic-lens spectrometer. 
 The operation of $\beta$ spectrometers depends on the behaviour of electrons subject to magnetic fields. 
 
-The spectrometer is aligned parallel to the horizontal component of the Earth's magnetic field, whilst 
-% what of the vertical component?
-% What effect does that have? How can you nullify its effects?
-% Why does this makes sense? (hint: a pair of Helmholtz coil generates uniform magnetic fied in one directiononly. How many pairs do we have?) Also, why provide the ability to change the B field in only 1 direction? 
+The spectrometer is aligned parallel to the horizontal component of the Earth's magnetic field, Then the horizontal component of the field does not affect the electron paths. The vertical component is nullified by an adjustable bias coil current from a pair of Helmholtz coils.
 
 The magnetic field of the spectrometer lens is varied by changing the current passing though the lens coils.
 Modifying a cone of electron trajectories diverging from the source along the spectrometer's axis, causing them to spiral around the axis of the instrument towards detector\cite{SPA}. 
 
-\subsection{Background radiation}
-% how do you determine what is a acceptable level for your background measurement?
+\subsection{Constant time vs constant counts}
 
-\subsection{constant time vs constant counts}
 The counting controls of the experimental apparatus can be defined by the user.
 For constant time, the best estimation for the uncertainty in the number of counts $n$ is $\sqrt{n}$\cite{SPA} due to the poissonian nature of radioactive decay. 
 The fractional uncertainty in counts is $\frac{\sqrt{n}}{n} = \frac{1}{\sqrt{n}}$
 Fractional uncertainty is a preserved quantity. Therefore the uncertainty in time
 is :$ \Delta t = \frac{t}{\sqrt{n}}$ 
 
-By using constant counts, we are able to pre-determine the fractional uncertainty for a data point. 
-An obvious constraint from choosing this method is that the alloted time for the experiments is not as easily monitored as with constant time. 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Since both have pros and cons, the best option is a combination of both counting methods.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+From this result we note that with both methods we are able to pre-determine the fractional uncertainty for a data point. 
+But an obvious constraint from choosing the constant counts method is that the alloted time for the experiments is not as easily monitored as with constant time. 
+Given the possible time constraint. The counting controls are set to constant time. 
+The interval used to count events isdefined by trying to mantain the uncertainty in the count as less than 5 percent.
+
+\begin{equation}\frac{t}{\sqrt{n}} \leq \frac{1}{20},
+\end{equation}
+\begin{equation}\therefore n \leq 400,
+\end{equation}
+
+From an earlier attempt at the experimental data acqusition we learned that the maximum time interval $t = 600s$ yielded  $n \approx 2000$ counts. A simple calculation comparing the count ratios yields the time interval $t = 360s$ as the upper bound for our constant time interval.
+
+\subsection{Background radiation}
+
+After we obtain the raw spectrum $n_{\mathrm raw}$ as a function of the lens current. The first processing step is to correct our data from the background radiation count.
+The 4 measurements of the background radiation counts are added, averaged and the average is subtracted from the raw count.
 
 \subsection{Resolution}
+
 In a magnetic spectrometer with fixed geometry and variable $B$ the resolution 
 \begin{equation}R = \frac{\Delta(B \rho)}{B \rho},
 \end{equation}
 is constant (in this experiment $R = (2-3\%)$). 
 Where $\Delta(B \rho)$ is a measure of the accepted momentum band ($\Delta p$). 
 When plotting the momentum distribution it is necessary to divide the number of counts n(p) at each current setting by the corresponding current in order to get the correct form of the spectrum\cite{Siegbahn}.
-
-%MORE ON RESOLUTION TBA?
+\begin{equation} n(I) = \frac{n_{\mathrm net}}{I_{\mathrm lens}},
+\end{equation}
 
 \subsection{Experimental procedure}
 Firstly, Decide what range and increments of lens current are adequate to resolve the momentum spectrum.
@@ -144,100 +191,108 @@ Then, using the experimental control interface:
     Close the source shutter.
     With the lens current disabled, proceed to run the experiment and count the background radiation (repeat this step 4 times).
 \end{enumerate}
+After these steps are finalised we can start acquiring $\beta^{-}$ radiation data from our source of \textsuperscript{137}Cs.
 \subsection{Data acquisition algorithm}
 \begin{enumerate}
 \item Enable the lens coil current.    
 \item Set the shutter status to open.
 \item Run the experiment.
 \item Increase the lens coil current.
-\item Repeat previous steps until reaching the max coil current.
+
+
+Repeat steps (3-4) until reaching the maximum value of the coil current range.
 \end{enumerate}
 
 \section{Results}
-% For every uncertainty, you should show an explicit calculation (i.e. using numbers on paper) as an example for each data set.
 
 The experimental parameters used are as follows:
 The lens current range is set from $0$A to $3.6$A
 Increments of $0.1A$ are chosen. 
 Counting controls were set to constant time: The intervals $t = 360$s.
 
-After we obtain the raw spectrum $n_{raw}$ as a function of the lens current. The first processing step is to correct our data from the background radiation count.
-The 4 measurements of the background radiation counts are added, and averaged. 
-\begin{equation} n_{b,avg} = \frac{685}{4} = 171,
-\end{equation}
-The uncertainty in the average background count is:
-\begin{equation} u(n_{b,avg}) = \frac{\sqrt{n_{b,avg}}}{4} = 7
-\end{equation}
-Here we have converted the calculated values to the closest integer values.
-The average background count $n_{b,avg}$ is then subtracted from the measured data $n(I)$. We chose the uncertainty in the raw count to be: $u(n_{raw}) = 15$.
-Then, the uncertainty in the background corrected data is:
-\begin{equation} u(n(I)) = \sqrt{u(n_{b,avg})^2 + u(n_{raw})^2}
-\end{equation}
+As described in section 3.3, we must correct $n(I)_{net}$ for the spectrometers resolution.
 
-As per section 3.3, we must also correct the count for the spectrometers resolution.
-\begin{equation} n(I) = \sqrt{u(n_{b,avg})^2 + u(n_{raw})^2}
-\end{equation}
+\subsection{The momentum spectrum}
+We calibrate the measured spectrum by using the conversion peak energy $T_k$. 
+Since there are only 2 data points visible in our conversion peak, it is unlikely that we have found the true 
+value for the corresponding current $I_k$ to the K-peak.
 
-\begin{equation} u(n(I)) = \sqrt{u(n_{b,avg})^2 + u(n_{raw})^2}
-\end{equation}
-%     correct_count = background_corrected_count / lens_current
-%     u_correct_count = np.sqrt((u_background_corrected_count / background_corrected_count)**2 + (u_lens_current / lens_current)**2)
-%     return correct_count, u_correct_count
+Using equation $(10)$ we proceed to find the constant of proportionality in equation $(5)$.
 
-
-
+Table I. K-peak parameters and uncertainties.
+\begin{center}
+% \caption{Table, floating element}
+\begin{tabular}{ c c c c }
+\hline
+\hline
+\phantom & $I_k$ & \phantom & 1.89 \\ 
+\phantom & $u(I_k)$ & \phantom & 0.05  \\
+\phantom & $k$ & \phantom & 1.05  \\
+\phantom & $u(k)$ & \phantom & 0.03 \\
+\hline
+\hline
+\end{tabular}
+\end{center}
 
 
-We now calibrate the spectrum by using the conversion peak energy $T_k$
+Table II. Corrected count, momentum, energy data and uncertainties.
+To be used in linear Kurie Plot, We compute the relativistic energy value from the momentum $w = \sqrt{p^2 + 1}$.
+\begin{tabular}{ c c c c c c }
+\hline
+\hline
+n & u(n) & p [mc] & u(p) [mc] & $w [mc^2]$ & $u(w) [mc^2]$ \\
+\hline
+1612 &  20 & 0.73 & 0.02 & 1.24 & 0.02 \\
+1441 &  20 & 0.83 & 0.02 & 1.30 & 0.02 \\
+1318 &  18 & 0.94 & 0.03 & 1.37 & 0.02 \\
+1291 &  16 & 1.04 & 0.03 & 1.44 & 0.03 \\
+1040 &  15 & 1.15 & 0.03 & 1.52 & 0.03 \\
+798 &  14 & 1.25 & 0.03 & 1.60 & 0.03 \\
+589 &  13 & 1.36 & 0.04 & 1.68 & 0.04 \\
+356 &  12 & 1.46 & 0.04 & 1.77 & 0.04 \\
+190 &  11 & 1.57 & 0.04 & 1.86 & 0.04 \\
+62 &  10 & 1.67 & 0.04 & 1.95 & 0.04 \\
+\hline
+\hline
+\end{tabular}
 
-Firstly, since there are only 2 data points visible in our conversion peak, it is unlikely that we have found the true value for the corresponding current $I_k$ to the K-peak.
+\begin{Figure}
+ \centering
+ \includegraphics[width=\linewidth]{Kurie_linear_data_plot.png}
+ \captionof{figure}{Linear fit was obtained using the curve\_fit optimisation algorithm from the Scipy library.}
+\end{Figure}
 
-We perfom a lorentzian fit on the K-peak in order to find a good estimate of the true peak $n(I_k)$ value.
+\begin{Figure}
+ \centering
+ \includegraphics[width=\linewidth]{linear_residuals_Kurie_linear_data.png}
+ \captionof{figure}{Linear fit residuals for optimised Kurie plot data.}
+\end{Figure}
 
-% \begin{figure}\begin{center}
-% \includegraphics[width=0.5\linewidth]{lorentzian_fit.png}}\end{center}
-% \caption{}\label{fig:setup}
-% \end{figure}
+In equation $(14)$ we defined a zeroth order fit for the Kurie Plot. $S_0 = 1$ 
+Using an optimised fitting algorithm we determine the optimal parameters for this linear fit.
+From these parameters and equation $(15)$ we find $w_0 = 1.03 \pm 0.04$ MeV.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-We proceed to find the constant of proportionality in $p = kI$ using equation $(10)$.
+Using $w_0$ we calculate higher order approximations of shape factor $S_n$ which in turn increases the order and accuracy of $w_n$.
+Finally we find that $T = 0.514 \pm 0.05$ MeV. This value is $\sigma = 0.04$ away from true result $T = 0.512$ MeV.
 
-We convert $T_k$ into relativistic units  $T_k = 1.22$ $mc^2$
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    % I_k = lens_current[20] 
+\section{Discussion}
+% COMMENT MORE ON WEAKNESS OF eyeing the conversion peak METHOD
 
-% FIX THISSSSSS% 
-From equation $(10)$ we find $k = 1.049$. We define the uncertainty value for $I_k: u(I_k) = \frac{0.1}{2}$ since we estimated the true location of our peak based on a curve fit. The uncertainty in $k$ is: 
-\begin{equation} u(k) = k \frac{u(I_k)}{I_k} = 0.03
-\end{equation} 
+% FIGURE1
+% The returned parameter covariance matrix is based on scaling sigma by a constant factor. This method overestimates the fit uncertainty $\Chi^2$ normalisation.
 
+In this section you will discuss the physical meaning and accuracy of the results
 
+ and their relevance to the theoretical or experimental aims of the investigation. Attention should be drawn to any interesting features in the results.
 
+ Your personal contribution to the work, either theoretical or experimental should be included here, together with any ideas or suggestions you have developed.
 
-% \begin{figure}\begin{center}
-% \includegraphics[width=0.5\linewidth]{lorentzian_fit.png}}\end{center}
-% \caption{}\label{fig:setup}
-% \end{figure}
+\section{Conclusion}
 
-
-
-
-
-
-% you have not corrected for the spectrometer resolution.
-
-
-
-% Bring the S_n factor to the LHS so that you have: (n/p*w*G*S)^(1/2) = K*(w_0 -w). Now, you could use your obtained w_0 value for when S = 1 into this expression. Then repeat the previous analysis. You should obtain a new w_0 value. What if you continue this process? Eventually, the w_0 value you put in will be the same as the one you get out as the x-uncertainty. Youshould do this for the report.
+Using a magnetic spectrometer we measure the energy spectrum of electrons emitted as $\beta$ radiation from a \textsuperscript{137}Cs source. Our investigation focuses in determining the relationships between the spectrometer's lens current, electrons' momenta and their energy. We find that the value of the kinetic energy of the nuclear transition is $T = 0.514 \pm 0.05$ MeV which is in agreement with the accepted value of $T = 0.512$ MeV.
 
 
 \end{multicols}
 \bibliography{mybib}
 \bibliographystyle{unsrt}
 \end{document}
-
-
-% The observed maximum value in the Kurie--Fermi plot represents the count of electrons that take the maximum possible kinetic energy whilst the antineutrinos carry close to zero kinetic energy from the transition.
-
-% The spectrum is a direct result of the varying (?) mass of the antineutrino.
-

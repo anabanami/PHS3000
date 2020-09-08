@@ -1,5 +1,5 @@
 # PHS3000
-# Betarays - radioactive decay Cs - 137
+# Betarays - Radioactive decay of Cs - 137
 # Ana Fabela, 15/08/2020
 import monashspa.PHS3000 as spa
 from scipy.interpolate import interp1d
@@ -59,38 +59,6 @@ def csv(data_file):
     lens_current = np.array(lens_current)
     return background_count_data, count, lens_current, u_lens_current
 
-def compute_k(lens_current):
-    # Finding constant of proportionality in p = kI
-    # calibration peak (K) index of k peak is i=20
-    T_K = 624.21 * keV / rel_energy_unit
-    I_k = lens_current[20] 
-    k = np.sqrt((T_K + 1)**2 - 1) / I_k
-    # defining appropriate uncertainty for our k peak
-    u_I_k = 0.1 / 2
-    u_k = k * (u_I_k / lens_current[20])
-    # print(f'{T_K=:.3f} mc^2')
-    print(f'{k=:.3f}')
-    print(f'{u_I_k=:.3f}')
-    print(f'{u_k=:.3f}')
-    return k, u_k
-
-def compute_p_rel(lens_current, k, u_k):
-    # The momentum spectrum (relativistic units)
-    p_rel = k * lens_current
-    u_p_rel = p_rel * np.sqrt((u_k / k)**2 + (0.0005 / lens_current)**2)
-    dp_rel = p_rel[1]-p_rel[0]
-    return p_rel, u_p_rel, dp_rel
-
-def interpolated_fermi(p_rel):
-    # G = (p_rel * F(z=55, ,w_rel)) / w_rel
-    fermi_data = spa.betaray.modified_fermi_function_data
-    return interp1d(fermi_data[:,0], fermi_data[:,1], kind='cubic')(p_rel)
-
-def compute_w(p_rel):
-    # KURIE/Fermi PLOT
-    w_rel = np.sqrt(p_rel**2 + 1) # relativistic energy units
-    u_w_rel = u_p_rel[8:18]
-    return w_rel, u_w_rel
 
 def correct_count(background_count_data):
     # correcting our data by removing avg background count and adjusting it for spectrometer resolution (3%)
@@ -114,15 +82,54 @@ def correct_count(background_count_data):
     # As per Siegbahn [9] correction for spectrometers resolution
     correct_count = background_corrected_count / lens_current
     u_correct_count = correct_count * np.sqrt((u_background_corrected_count / background_corrected_count)**2 + (u_lens_current / lens_current)**2)
-    
-    print(f'\n{total_background=:.0f}')
-    print(f'{avg_background_count=:.0f}')
-    print(f'{u_avg_background_count=:.0f}')
 
-    print(f'\ncorrect counts:{correct_count}')
-    print(f'uncertainty:{u_correct_count}')
+    # print(f'\n{total_background=:.0f}')
+    # print(f'{avg_background_count=:.0f}')
+    # print(f'{u_avg_background_count=:.0f}')
+
+    # print(f'\ncorrect counts:{correct_count[8:18]}')
+    # print(f'uncertainty:{u_correct_count[8:18]}')
 
     return correct_count, u_correct_count
+
+def compute_k(lens_current):
+    # Finding constant of proportionality in p = kI
+    # calibration peak (K) index of k peak is i=20
+    T_K = 624.21 * keV / rel_energy_unit
+    I_k = lens_current[20] 
+    k = np.sqrt((T_K + 1)**2 - 1) / I_k
+    # defining appropriate uncertainty for our k peak
+    u_I_k = 0.1 / 2
+    u_k = k * (u_I_k / lens_current[20])
+    # print(f'{T_K=:.3f} mc^2')
+    # print(f'{k=:.3f}')
+    # print(f'{u_I_k=:.3f}')
+    # print(f'{u_k=:.3f}')
+    return k, u_k
+
+def compute_p_rel(lens_current, k, u_k):
+    # The momentum spectrum (relativistic units)
+    p_rel = k * lens_current
+    u_p_rel = p_rel * np.sqrt((u_k / k)**2 + (0.0005 / lens_current)**2)
+    dp_rel = p_rel[1]-p_rel[0]
+    # print(f'\np :{p_rel[8:18]}')
+    # print(f'uncertainty:{u_p_rel[8:18]}')
+    # print(f'dp :{dp_rel}')
+    return p_rel, u_p_rel, dp_rel
+
+def interpolated_fermi(p_rel):
+    # G = (p_rel * F(z=55, ,w_rel)) / w_rel
+    fermi_data = spa.betaray.modified_fermi_function_data
+    return interp1d(fermi_data[:,0], fermi_data[:,1], kind='cubic')(p_rel)
+
+def compute_w(p_rel):
+    # KURIE/Fermi PLOT
+    w_rel = np.sqrt(p_rel**2 + 1) # relativistic energy units
+    u_w_rel = u_p_rel[8:18]
+    # print(f'\n{w_rel=}')
+    # print(f'{u_w_rel=}')
+    return w_rel, u_w_rel
+
 
 def f(x, m, c):
     # linear model for optimize.curve_fit()
@@ -138,7 +145,6 @@ def LHS(S_n, u_S_n):
     # left hand side of our linearised relation
     y = np.sqrt(correct_count[8:18] / (p_rel[8:18] * x * interpolated_fermi(p_rel[8:18]) * S_n))
     u_y = (y / 2) * np.sqrt((u_correct_count[8:18] / correct_count[8:18])**2 + (2 * (u_p_rel[8:18] / p_rel[8:18])**2) + (u_interpolated_fermi / interpolated_fermi(p_rel[8:18]))**2 + (u_S_n / S_n)**2)
-    # u_y = (y / 2) * np.sqrt((u_correct_count[8:18] / correct_count[8:18])**2 + (2 * (u_p_rel[8:18] / p_rel[8:18])**2) + (u_S_n / S_n)**2)
     return y, u_y
 
 def optimal_fit(f, x, y, u_y):
@@ -193,9 +199,12 @@ def compare(T, u_T):
     diff = 0.512 * MeV - T
     how_many_sigmas = diff / u_T
     print(f"\nEXPECTED RESULT T = {theory_T / MeV :.3f} MeV")
-    print(f"(optimised) T = {T / MeV:.2f} ± {u_T / MeV:.2f} MeV")
+    print(f"(optimised) T = {T / MeV:.3f} ± {u_T / MeV:.2f} MeV")
     # print(f"difference {diff:.3f}")
     print(f"number of 𝞼 away from true result: {abs(how_many_sigmas):.3f}")
+
+
+
 
 ########################### Calling our functions ###########################
 
@@ -205,13 +214,15 @@ background_count_data, count, lens_current, u_lens_current = csv(data)
 # find constant k
 k, u_k = compute_k(lens_current)
 
-# find momentum spectrum
-p_rel, u_p_rel, dp_rel = compute_p_rel(lens_current, k, u_k)
-
 # correct background count (accounting for background and resolution (3%))
 correct_count, u_correct_count = correct_count(background_count_data)
 
-######################### Linear fit ##########################
+# find momentum spectrum
+p_rel, u_p_rel, dp_rel = compute_p_rel(lens_current, k, u_k)
+
+
+
+
 # our sliced data linearised
 x, u_x = compute_w(p_rel[8:18])
 
@@ -221,19 +232,23 @@ u_interpolated_fermi = np.sqrt((u_p_rel[8:18] / p_rel[8:18])**2 + (u_x / x)**2) 
 # LINEARISED KURIE WITH RESOLUTION CORRECTION
 y = np.sqrt(correct_count[8:18] / (p_rel[8:18] * x * interpolated_fermi(p_rel[8:18])))
 u_y = (y / 2) * np.sqrt((u_correct_count[8:18] / correct_count[8:18].clip(min=1))**2 + (2 * (u_p_rel[8:18] / p_rel[8:18])**2) + (u_interpolated_fermi / interpolated_fermi(p_rel[8:18]))**2)
-# u_y = (y / 2) * np.sqrt((u_correct_count[8:18] / correct_count[8:18])**2 + (2 * (u_p_rel[8:18] / p_rel[8:18])**2))
 
 # first order fit
 opt_K_2, opt_intercept, u_opt_K_2, u_opt_intercept, optimised_fit, u_f = optimal_fit(f, x, y, u_y)
 # using our parameters to find opt_w_0
 opt_w_0 = opt_intercept / - opt_K_2
 u_opt_w_0 = np.sqrt((u_opt_K_2 / opt_K_2)**2 + (u_opt_intercept / opt_intercept)**2) * opt_w_0
+print(f" w_0 = {opt_w_0 * rel_energy_unit / MeV:.3f} MeV")
+print(f"u(w_0) = {u_opt_w_0 * rel_energy_unit / MeV:.3f} MeV")
 
 # ITERATIVE ANALYSIS using Shape factor (higher order fits)
 T, u_T, yn, u_yn, optimised_fit, u_f = iterative_solve(x, opt_w_0, u_opt_w_0)
 
 # final comparison to theoretical value T = 0.512 MeV
 compare(T, u_T)
+
+
+
 
 ############################ plots ############################
 
@@ -260,7 +275,8 @@ plt.title("linear fit for Kurie data")
 plt.xlabel(r"$w [mc^{2}]$")
 plt.ylabel(r"$\left ( \frac{n}{p w G} \right )^{\frac{1}{2}}$", rotation=0, labelpad=18)
 plt.legend()
-# spa.savefig('Kurie_linear_data_plot.png')
+spa.savefig('Kurie_linear_data_plot.png')
+# plt.show()
 
 residuals = optimised_fit - yn
 plt.figure()
@@ -274,6 +290,6 @@ plt.title("Residuals: linear fit for Kurie data")
 plt.xlabel(r"$w [mc^{2}]$")
 plt.ylabel(r"$\left ( \frac{n}{p w G} \right )^{\frac{1}{2}}$", rotation=0, labelpad=18)
 plt.legend()
-# spa.savefig('linear_residuals_Kurie_linear_data.png')
+spa.savefig('linear_residuals_Kurie_linear_data.png')
 # plt.show()
 ############################ plots ############################

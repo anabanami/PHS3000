@@ -1,6 +1,6 @@
 % latexmk -pvc -pdf
-\documentclass[10pt, a4paper]{article}
-\usepackage[margin=0.7in]{geometry}
+\documentclass[9pt, a4paper]{article}
+\usepackage[margin=0.65in]{geometry}
 \usepackage{multicol}
 \usepackage{amsmath,amsthm,amsfonts,amssymb}
 \usepackage[english]{babel}
@@ -37,10 +37,7 @@ The process we currently know as $\beta^{-}$ decay describes a neutron in a pare
 In a $\beta^{-}$event, both nuclides (nuclear species) have the same number of nucleons. This means that the daughter nucleus will not experience a substantial change in kinetic energy (recoil) due to the decay event. Leaving most of the desintegration energy available to be carried-off by the leptons as kinetic energy. 
 
 A parent nucleus has a given initial energy $w$. 
-The avalilable kinetic energy of the system is equal to the decrease in mass energy due to the creation of the radiated leptons:
-\begin{equation}T = w - m c^2,
-\end{equation} where $m$ is the difference in mass between the daughter and parent nuclides.
-In relativistic units:
+The avalilable kinetic energy of the system is equal to the decrease in mass energy due to the creation of the radiated leptons. In relativistic units:
 \begin{equation}T = w - 1,
 \end{equation}
 
@@ -78,21 +75,17 @@ One way for the daughter atom to lose energy is by transferring the excess energ
 The orbital will most likely be the K-shell since it is the lowest energy orbital. A higher energy group event is much rarer (probability of $6\%$), therefore little error is made  by assuming that the peak is due to the K line only.\cite{SPA}.
 
 The constant $k$ in (3) is determined by calibrating the observed spectrum to the well-known K-conversion peak with kinetic energy $T_k = 624.21$ keV.
- 
 In relativistic units, the calibration calculation is as follows:
-\begin{equation}T = w - 1,
-\end{equation}
-in terms of the momentum $p_k$
+we write equation (1) in terms of the momentum $p_k$
 \begin{equation}T_k = \sqrt{{p_{k}}^{2} + 1} -1,
 \end{equation}
 \begin{equation} \therefore p_k = \sqrt{({T_{k} + 1)}^{2} - 1 },
 \end{equation}
-from equation (5)
+from equation (4)
 \begin{equation} k I_k = \sqrt{({T_{k} + 1)}^{2} - 1 },
 \end{equation}
 \begin{equation} \therefore k = \frac{\sqrt{({T_{k} + 1)}^{2} - 1 }}{I_k},
-\end{equation}
-is the proportionality constant we are after.
+\end{equation}is the proportionality constant we are after.
 
 \subsection{Kurie--Fermi theory}
 
@@ -127,7 +120,6 @@ We proceed to find the zeroth order energy transition $w_0$
 \end{equation}
 After we have obtained $w_0$ we can iteratively repeat the previous analysis. 
 From this we obtain higher order $w_n$ and $S_n$ values. We use the results from the iteration to find a convergent value for $T$ the transition energy.
-
 
 \section{Method}
 
@@ -176,6 +168,7 @@ When plotting the momentum distribution it is necessary to divide the number of 
 \end{equation}
 
 \subsection{Experimental procedure}
+
 Firstly, Decide what range and increments of lens current are adequate to resolve the momentum spectrum.
 Then, using the experimental control interface:
 \begin{enumerate}
@@ -198,8 +191,6 @@ After these steps are finalised we can start acquiring $\beta^{-}$ radiation dat
 \item Set the shutter status to open.
 \item Run the experiment.
 \item Increase the lens coil current.
-
-
 Repeat steps (3-4) until reaching the maximum value of the coil current range.
 \end{enumerate}
 
@@ -208,20 +199,15 @@ Repeat steps (3-4) until reaching the maximum value of the coil current range.
 The experimental parameters used are as follows:
 The lens current range is set from $0$A to $3.6$A
 Increments of $0.1A$ are chosen. 
+To minimise earth's magnetic field we set the bias coil current to $I = 0.7167 \pm 0.0005$
 Counting controls were set to constant time: The intervals $t = 360$s.
-
-As described in section 3.3, we must correct $n(I)_{net}$ for the spectrometers resolution.
 
 \subsection{The momentum spectrum}
 We calibrate the measured spectrum by using the conversion peak energy $T_k$. 
-Since there are only 2 data points visible in our conversion peak, it is unlikely that we have found the true 
-value for the corresponding current $I_k$ to the K-peak.
-
 Using equation $(10)$ we proceed to find the constant of proportionality in equation $(5)$.
 
 Table I. K-peak parameters and uncertainties.
 \begin{center}
-% \caption{Table, floating element}
 \begin{tabular}{ c c c c }
 \hline
 \hline
@@ -233,7 +219,6 @@ Table I. K-peak parameters and uncertainties.
 \hline
 \end{tabular}
 \end{center}
-
 
 Table II. Corrected count, momentum, energy data and uncertainties.
 To be used in linear Kurie Plot, We compute the relativistic energy value from the momentum $w = \sqrt{p^2 + 1}$.
@@ -276,16 +261,17 @@ Using $w_0$ we calculate higher order approximations of shape factor $S_n$ which
 Finally we find that $T = 0.514 \pm 0.05$ MeV. This value is $\sigma = 0.04$ away from true result $T = 0.512$ MeV.
 
 \section{Discussion}
-% COMMENT MORE ON WEAKNESS OF eyeing the conversion peak METHOD
 
-% FIGURE1
-% The returned parameter covariance matrix is based on scaling sigma by a constant factor. This method overestimates the fit uncertainty $\Chi^2$ normalisation.
+The dominant problem in our analysis is the process by which we obtained the value of the proportionality constant $k$. It unlikely that we have found the true value $I_k$. The value of $I_k$ was simply set to the corresponding current measured for the apparent conversion peak. 
+Since there are only 2 data points visible in our conversion peak a better method would have been to create a lorentzian fit for the data. Unfortunately we were not able to write code and perform this fit adequately so the naive method remained.
 
-In this section you will discuss the physical meaning and accuracy of the results
+Our experimental execution and the theoretical framework of $beta$-decay we use in this report ignores the mass of the neutrino. We hypothesize that the fact that the electrons are emitted with specific momentum ranges is likely closely related to the varying mass of emitted neutrinos. 
 
- and their relevance to the theoretical or experimental aims of the investigation. Attention should be drawn to any interesting features in the results.
+There are three neutrino flavor states and three discrete neutrino masses with different values (they do not correspond uniquely to the three flavors). A neutrino created with a specific flavor has an associated specific quantum superposition of all three mass states\cite{Wikipedia-Neutrino}. 
 
- Your personal contribution to the work, either theoretical or experimental should be included here, together with any ideas or suggestions you have developed.
+It is presently known that neutrinos oscillate between different flavors during flight. This oscillation occurs because the three mass state components of the produced flavor travel at different speeds.
+This means that relative phase shifts between their wave packets develop. 
+Their interaction with the detectors determines how their wave packets combine to produce a varying superposition of three flavors\cite{Wikipedia-Neutrino}. 
 
 \section{Conclusion}
 

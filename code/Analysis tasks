@@ -1,0 +1,22 @@
+Analysis tasks
+1.From your data, determine the pressure that will correspond to the absorption of alpha particles with  the  most  probable  energy  (At  this  pressure  the  range  will be  the  distance  between  the  source and the detector). 
+
+2.Using this information,  determine the energy of the alpha particles emitted from the source. How does this compare to the known energy of the alpha particles emitted from 241Am (5.4857 MeV)?  Also  determine  the  calibration  factor  for  the  MCA  in  terms  of  energy  (MeV)  per  channel. 
+
+3.Calculate  the  anticipated  range  for  alpha  particles  passing  through  a  thick  gold sample. Assuming  the  energy difference  between  your  measurement  of  the  source’s  alpha  particle  energy and the expected value is due to absorption by the gold coating on the source, determine the thickness of the coating and compare this to the source manufacturer’s value.
+
+4.Produce a theoretical plot of the range versus energy for alpha particles in air,  at atmospheric pressure, for energies up to 6 MeV.  For alphas emitted from the source in the experiment, calculate the range in air at atmospheric pressure, and include this point on your graph. 
+
+5.Use your data to produce a plot of the width of the energy spectrum of the alpha particles as a function of pressure. Comment on the observed behaviour. 
+
+6.To  determine  the  effect  of  range  straggling,  you  will  need  to  determine  how  the  number  of  surviving particles varies with pressure. Produce a plot of the number of surviving particles as a  function  of pressure.  Remember  to  consider  the  effects  of  not  observing  below-threshold energy particles.
+
+7.Determine the straggling parameter α from your plot of particle number versus pressure.  (Hint: fit equation 12b to your data using a non-linear fitting tool such as Python or MATLAB. See the documentation in the PHS3000 laboratory manual for more information.) Does your value agree with theoretical predictions? Explain any discrepancy.
+
+8.Also from  your  fit,  obtain  a  value for  the  pressure  corresponding  to  the  range  condition. Compare  this  to  the  value  you  obtained  previously  and  comment  on  any  difference.  Which  result do you think is more accurate and why?
+
+IMPORTANT THINGS
+https://youtu.be/od2ZXCAIMZc?t=190
+
+https://youtu.be/od2ZXCAIMZc?t=496
+

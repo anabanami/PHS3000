@@ -25,10 +25,8 @@ eV = 1.602e-19 # [J]
 MeV = eV * 1e6 # [J]
 keV = eV * 1e3 # [J]
 
-p_zero = 37 * kilo # [Pa]
-p_0 = p_zero / kilo # [kPa]
-
-u_p = np.sqrt(0.025**2 + 0.01**2) # resolution and accuracy [kPa]
+p_zero = 36.1 * kilo # [Pa]
+u_p_zero = 0.5 * kilo
 
 A_air = 14.5924
 A_Au = 196.966570
@@ -60,7 +58,8 @@ def read_files():
         header, data = spa.read_mca_file(read_folder/file)
         data_files.append(data)
     p_values = np.asarray(p_values)
-    return p_values, data_files
+    u_p = np.sqrt((0.0025 * p_values)**2 + 0.01**2) # resolution and accuracy [kPa]
+    return p_values, u_p, data_files
 
 def calibrate_axis(x, E_0, u_E_0):
     # calibration factor for x-axis
@@ -127,26 +126,27 @@ def energy_peaks(p_values, data_files):
 
 def plot_pressure_vs_energy(p_values, max_positions):
     # pressure vs Energy peak
-    plt.plot(p_values, max_positions[1:])
+    plt.plot(p_values, max_positions[1:],'o', color='tomato', markersize=2.5, label="peak")
     plt.xlabel('pressure / kPa')
     plt.ylabel('Bin number')
     plt.title(f' Position of peak vs pressure ')
+    plt.legend()
     spa.savefig(f'peak_position_vs_pressure.png')
-    # plt.show()
+    plt.show()
 
 def Task_2(x_0, u_x_0):
     # Calculating E_0 
     # from equation (5)
     R_0 = x_0
     u_R_0 = u_x_0
-    # print(f"\n{T = :.2f} K, R = {R} cm, p = {p_zero / kilo} kPa")
+    # print(f"\n{T = :.2f} K, R = {R_0} cm, p = {p_zero / kilo} kPa")
     E_0 = (R_0 * p_zero / (64.31 * T))**(1 / 1.73)
-    u_E_0 = (E_0 / 1.73) * np.sqrt((u_R_0 / R_0)**2 + (u_p / p_zero)**2 + (u_T / T)**2)
-    # print(f"\nE_0 = {E_0:.2f} ± {u_E_0:.2f} MeV")
+    u_E_0 = (E_0 / 1.73) * np.sqrt((u_R_0 / R_0)**2 + (u_p_zero / p_zero)**2 + (u_T / T)**2)
+    print(f"\nE_0 = {E_0:.2f} ± {u_E_0:.2f} MeV")
     # # difference in energy 
     diff_range_E = alpha_energy - E_0
     u_diff_range_E = u_E_0 
-    # print(f"\n{diff_range_E = :.2f} ± {u_diff_range_E:.2f}")
+    print(f"\n{diff_range_E = :.2f} ± {u_diff_range_E:.2f}")
     return R_0, u_R_0, E_0, u_E_0
 
 def Task_3(E_0, u_E_0, rho_atm, rho_gold, A_Au, A_air, alpha_energy):
@@ -228,7 +228,8 @@ def f(p_values, p_R, α):
     return (1 / 2) * (1 - special.erf((p_values - p_R) / α))
 
 def Task_7_8(f, x, y):
-    # p_0 = p_zero / kilo # [kPa]
+    p_0 = p_zero / kilo # [kPa]
+    u_p_0 = u_p_zero / kilo
     # print(x)
     # print(f"{p_0}")
 
@@ -259,15 +260,16 @@ def Task_7_8(f, x, y):
     plt.title(r'Number alpha particles as a function of pressure')
     plt.legend()
     spa.savefig(f'alphas_vs_pressure.png')
-    plt.show()
-    return p_R, pα, u_p_R, u_pα
+    # plt.show()
+    return p_R, pα, u_p_R, u_pα, p_0, u_p_0
 
-def compare(p_R, pα, u_p_R, u_pα):
+def compare(p_R, pα, u_p_R, u_pα, p_0, u_p_0):
     # conversion to distance units
     p_atm = 101.325 # [kPa]
+    u_p_atm = np.sqrt((0.0025 * p_atm)**2 + 0.01**2) # [kPa]
 
     xα = (pα / p_atm) * R_atm
-    u_xα = xα * np.sqrt((u_pα / pα)**2 + (u_p / p_atm)**2 + (u_R_atm /R_atm)**2)
+    u_xα = xα * np.sqrt((u_pα / pα)**2 + (u_p_atm / p_atm)**2 + (u_R_atm /R_atm)**2)
     # comparison to theory
     k = 0.015
     diff_range = R_atm - xα
@@ -279,17 +281,21 @@ def compare(p_R, pα, u_p_R, u_pα):
 
     diff_p = p_0 - p_R
     how_many_sigmas = diff_p / u_p_R
-    print(f"\nPrevious p_0: {p_0:.2f} ± {u_p:.2f} kPa")
+    print(f"\nPrevious p_0: {p_0:.2f} ± {u_p_0:.2f} kPa")
     print(f"fit p_0 {p_R:.2f} ± {u_p_R:.2f} kPa")
     # print(f"difference {diff_p:.3f}")
     print(f"number of 𝞼 away from true result: {abs(how_many_sigmas):.3f}")
 
+    xα
+
 
 ### * FUNCTION CALLS *###
 
-p_values, data_files = read_files()
+p_values, u_p, data_files = read_files()
 
 peak, signal, total_events, max_positions, max_counts, peak_widths = energy_peaks(p_values, data_files)
+
+plot_pressure_vs_energy(p_values, max_positions)
 
 R_0, u_R_0, E_0, u_E_0 = Task_2(x_0, u_x_0)
 
@@ -304,12 +310,12 @@ E, u_E = calibrate_axis(x, E_0, u_E_0)
 # Task_6(total_events)
 
 y = total_events[1:] / total_events[1]
-p_R, pα, u_p_R, u_pα = Task_7_8(f, p_values, y)
+p_R, pα, u_p_R, u_pα, p_0, u_p_0 = Task_7_8(f, p_values, y)
 # The straggling parameter can be expressed either as a pressure or a distance 
 # (at 1 atm pressure) it's just proportional to the range value in the units
  # you've expressed it in.
-print(f"\n{pα = :.2f} ± {u_pα:.2f} kPa")
+print(f"\n{pα = :.1f} ± {u_pα:.1f} kPa")
 
-compare(p_R, pα, u_p_R, u_pα)
+compare(p_R, pα, u_p_R, u_pα, p_0, u_p_0)
 
 

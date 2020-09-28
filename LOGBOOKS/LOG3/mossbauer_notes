@@ -1,0 +1,35 @@
+[7]
+a nucleus  with  a  long  half-life  has  an  in­trinsically better-defined frequency than a  nucleus  of  short  half-life.  But  reso­nance  excitation  requires  that  the  fre­quencies of emitter and absorber be the same  within  their  intrinsic  accuracy.  
+
+ the resonance ef­fect  disappears  if  the  frequency  of  the emitting nucleus differs from that of the absorber by as  little as  one part in  101c. In  the  language  of  modern  physics  we say  that  the  width  of  the  resonance,  or the  line  width,  is one  part in  1012.
+
+One  starts with a  radioactive  source  of  the  isotope cobalt  57,  which  is  commercially  avail­able  and  has  a  convenient  half-life  of 280  days.  As the cobalt-57  nuclei decay at  this  leisurely  rate,  they  change  in to excited nuclei of iron 57. The iron nuclei vibrate at a frequency of  3  X  10)8 oscil­lations  per  second,  with  a  half-life  of 10-7  second  (a  10th  of  a  millionth  of  a second).  Thus an  iron-57  nucleus  emits roughly  1012  waves. 
+
+In  quantum-mechanical parlance res­onance  occurs  only  if  the  energy  lines of   the   source   and   absorber   overlap within  their  widths.  In the  case  of  iron 57  the  photon  has  an  energy  of  about 14keV.  If we think of this energy  as  represented  by  a  line  in  a spectrum of  energies, then  the width of the line is determined by the half-life of the excited state of iron  57.  As we have mentioned,  the  half-life  is  about  10^-7 second,  which  gives  a  line  width  of about 10^-8 electron volt. This means that the uncertainty  or  fuzziness  in  the pho­tons'  energy  is  approximately  one  part in 10^12. 
+
+when  a nucleus emits  a photon, the  nucleus  recoils  in  the  opposite  di­rection,  like  a  gun  that  has  fired  a  bul­let.  In  both  cases  the  recoiling  mass takes  up  part  of  the  energy  produced, and  the  bullet  or  gamma  ray  emerges with  less  than  its  maximum  available energy.  On  the  other  hand,  a  nucleus that· absorbs  a  gamma  ray  recoils  too, and  thus  requires  a  photon  with  some­what  greater  energy.  As  a  result  both emission  and  absorption  lines  are  dis­placed.  In the case of iron  57 the recoil energy  is  about  10-3  (one  thousandth) electron  volt.  This  is  small  indeed  com­pared  to  the  energy  of  a  photon,  but  it is still  100,000 times larger than the line width.  Thus the emission and absorption lines   are   completely   separated,   and resonance  cannot  occur.
+
+The  most  useful  is iron  57.  The  low  energy  of  its  photons (14,000 electron volts) and its relatively long half-life  (10-7 second) give a sharp resonance  of  considerable  intensity  at room  temperature.
+When  recoil  is  eliminated  and  reso­nance  is  established,  a  slight  motion  of the source with respect to  the  absorber produces  enough  frequency  shift  to de­stroy the resonance again.  This provides a  means  of  unparalleled  sensitivity  for observing the Doppler effect.
+
+
+In studying the detailed properties  of a  nuclear  resonance the source  is  moved toward  and  away  from  the  absorber  at various  closely  controlled  speeds,  and the intensity  transmitted by the absorber is measured.  When  the  transmission  for iron  57  is  plotted  against  velocity,  the resulting curve shows a large absorption dip  at  zero  relative  speed  and  some smaller  dips  on  either  side   This shape  means that the  resonance  is  not  actually  a  single line, but is split into closely spaced lines. The explanation of "hyperfine" splitting, as  it  is  called,  is  to  be  found  in  the magnetic  properties  of  nuclei. 
+
+--IMAGE--
+RADIATION TRANSMITTED by an  absorber  moving  with  respect  to  a  source  is  plotted against the relative velocity of the hodies toward one another  (positive)  or away  (negative). The  multiple  dips  in  the  curve  represent  hyperfine  splitting  due  to  nuclear  magnetism.
+
+
+-----
+The fundamental  assumption  of  the  theory of  general  relativity  is  that  gravity  acts in exactly the same way as inertial forces that appear in accelerating systems.  The assl!mption  is  known  as  the principle of equivalence.  It  predicts  that  there  will be  a  lack  of  synchronization  in  clocks that is  caused  by  gravitational fields, or, to  put  it  another  way,  that  photons  be­ing  pushed  or  pulled  by  gravitational forces will change in frequency.
+
+Presently  it  seems  as  though  nuclear resonance  should  provide  the  long­awaited  crucial  test.  The  experiment  is very  simple  in  principle.  A  source  of iron  57  is  allowed  to  emit  photons  ver­tically,  say  in  the  downward  direction. Do these photons  gain  energy,  and thus frequency,  while  traveling  down,  be­cause  of  the  gravitational  attraction  of the  earth?  Is  there  a  detuning,  a  clock contraction,  with  an  absorber  a  few stories  lower?  The  expected  effect,  if general  relativity  is  correct,  is  small-of the  order  of  one  hundredth  of  the  line width.  But  it  should  be  possible  to  ob­serve  it  with  available  instrumentation.
+
+[8]
+Why did it take so long for the Mössbauer effectt o be discovered? The main reason is that resonant emission and absorption are much more difficult to achieve with gamma rays than with optical photons because of the much higher energies of gamma rays. The law of conservation of momentum requires that a free nucleus emitting a photon must recoil just as a rifle recoils on emitting a bullet.
+
+
+
+
+filenames::
+alpha iron v=711+_-1_4 mV correct folding.txt
+ferrocyanide v=160+_-0_8 mV correct folding.txt

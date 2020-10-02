@@ -70,7 +70,7 @@ def calibrate_axis(x, E_0, u_E_0):
     u_E = (u_1bin / _1bin) * E
     return E, u_E
 
-def plot_data(x, y, i, average, ax=None):
+def plot_data(x, y, p_values, i, average, ax=None):
     xmax = np.argmax(y)
     ymax = y.max()
     half_y_max = ymax / 2
@@ -78,25 +78,27 @@ def plot_data(x, y, i, average, ax=None):
     R = np.argmin((y[xmax:] - half_y_max)**2) + xmax
     peak_width = R - L
 
-    # if i >= 1:
-    #     text= "bin={:.0f}, count={:.0f}".format(xmax, ymax)
-    #     if not ax:
-    #         ax=plt.gca()
-    #     ax.annotate(text, xy=(xmax, ymax), xytext=(0.7, 1.02), textcoords='axes fraction')
+    if i >= 1:
+        text= "bin={:.0f}, count={:.0f}".format(xmax, ymax)
+        if not ax:
+            ax=plt.gca()
+        ax.annotate(text, xy=(xmax, ymax), xytext=(0.7, 1.02), textcoords='axes fraction')
 
-    # plt.bar(x, y, color='tomato',label="Detected alphas")
-    # plt.plot(x[:41], average, label="Extrapolation") # extrapolation cuve
-    # # plt.axhline(y=half_y_max, linestyle=':', alpha=0.3, label="Half max")
-    # # plt.fill_betweenx([0, ymax + 20], [L, L], [R, R], alpha=0.3, zorder=10)
-    # plt.xlim([0, 1024])
-    # plt.xlabel('Bins')
-    # plt.ylabel('Counts')
-    # plt.title(f'file[{i}].mca')
-    # plt.legend()
+    plt.bar(x, y, color='tomato',label="Detected alphas")
+    plt.plot(x[:41], average, label="Extrapolation") # extrapolation cuve
+    plt.axvline(x=xmax, color='green', alpha=0.5, label="centre of peak")
+    # plt.axhline(y=half_y_max, linestyle=':', alpha=0.3, label="Half max")
+    # plt.fill_betweenx([0, ymax + 20], [L, L], [R, R], alpha=0.3, zorder=10)
+    plt.xlim([0, 1024])
+    plt.xlabel('Bins')
+    plt.ylabel('Counts')
+    plt.title(f'p={p_values[i]} kPa')
+    plt.legend()
 
-    # spa.savefig(folder/f'file{i}.png')
-    # plt.show()
-    # plt.clf()
+    spa.savefig(folder/f'p={p_values[i]}kPa.png')
+    plt.show()
+    plt.clf()
+
     return xmax, ymax, peak_width
 
 def energy_peaks(p_values, data_files):
@@ -115,7 +117,7 @@ def energy_peaks(p_values, data_files):
         # print(f"{np.sum(signal)} + {np.sum(average_list)} = {total}")
 
         # barcharts to visualise our files
-        xmax, countmax, peak_width = plot_data(x, signal, i, average_list)
+        xmax, countmax, peak_width = plot_data(x, signal, p_values, i, average_list)
 
         max_positions.append(xmax)
         max_counts.append(countmax)

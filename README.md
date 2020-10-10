@@ -3,27 +3,24 @@
 Laboratory: semester 2 third year (2020) 
 
 #### LABWORK DURING LOCKDOWN:
-#### 4.04 REMOTE CONTROL BETA-RAY SPECTROMETER
+#### BETA-RAY SPECTROMETER
        [x]THURSDAY (6/08)10:00-16:00
         [-]SUNDAY (16/08) 11:00-17:00 void
         [x]TUESDAY (18/08) 10:00-17:00
          [x] logbook
-         [] report
+         [x] report
 
-#### 1.06 Rubidium hyperfine spectroscopy
-    [ ]BOOKING
+#### Range of alpha particles in air
+        -
+    [x] logbook
+    [ ] report
+
+#### Mossbauer spectroscopy
         -
     [ ] logbook
     [ ] report
 
-#### 3.03 Image formation and spatial filtering
-    [ ]BOOKING
-        -
-    [ ] logbook
-    [ ] report
-
-#### 3.08 Compton scattering
-    [ ]BOOKING
+#### blehg
         -
     [ ] logbook
     [ ] report

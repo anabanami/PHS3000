@@ -5,7 +5,9 @@
 \usepackage{amsthm,amsfonts,amssymb}
 \usepackage[english]{babel}
 \usepackage{blindtext}
+\usepackage{sidecap}
 \usepackage{caption}
+\usepackage{subfig}
 \usepackage{graphicx}
 \newenvironment{Figure}
     {\par\medskip\noindent\minipage{\linewidth}}
@@ -71,7 +73,11 @@ Since energy loss is proportional to the number of gas molecules encountered\cit
 where $P$ is the pressure and $P_{atm}$ is the atmospheric pressure, assuming that air behaves as an ideal gas this implies that the density of air molecules will vary linearly with the pressure P \cite{SPA} as per the following expression
 \begin{equation} \rho = \frac{P}{R_d T},
 \end{equation}
-where T is the absolute temperature of the gas and $R_d = 287.05$J(kg K)\textsuperscript{-1}  is the gas constant.
+where T is the absolute temperature of the gas and $R_d = 287.05$J(kg K)\textsuperscript{-1} is the specific gas constant.
+Using this relation the range R becomes:
+\begin{equation} R = 64.31 \frac{T}{p} E_0^{1.73},
+\end{equation}
+where the energy is measured in MeV \cite{SPA}. 
 
 \subsection{Range straggling}
 All alpha particles have the same initial mass-energy. It's likely that the reader might assume that if the emitted alpha particles interact with a homogeneous medium their ranges should be identical.
@@ -152,39 +158,98 @@ The experimental script informs us that the output for the detector's zero signa
 To find the baseline signal of the detector it is useful to fill  the  chamber  with  air  completely as this will  stop  all  alpha  particle  detection events\cite{SPA}.
 The  MCA  unit’s detection range is set between 0 and 5 volts, we assume that the first and last bins in the MCA range correspond exactly to a 0 and 5 volt input respectively and we proceed to calibrate the visible x axis. 
 
-Conveting the measured voltage into an anticipated MCA bin value requires us to multiply the x-axis by the estimated size of each bin.
+Converting the measured voltage into an anticipated MCA bin value requires us to multiply the x-axis by the estimated size of each bin.
 We therefore correct your data by considering the background count offset using the calibrated x-axis, and the threshold observed.
 
 Another important factor for obtaining an adequate spectrum is to make sure the threshold used is set to cut out the majority of the background noise peak. Nevertheless this presents a problem since the obtained spectrum of the particles fails to be complete at low energies given the cutting out of the noise peak. We fix this issue by extrapolating the spectrum. We choose to take an average of the first 50 values above the threshold for each data set. Thus obtaining a representative curve that accounts for the shape and noise of our data. 
-We calculate an uncertainty estimate for this process by
 
-----FINISH THIS----
+In order to find a representative value for the peak of each spectra we processed our data using a gaussian smoothing technique. We simply convolved the raw data with a gaussian that has $\sigma = 4$ From this it was straight forward to find an estimate for the mean of each distribution.
+We calculate an uncertainty estimate for this process by observing the data and estimating the possible uncertainty in the computed mean form the smoothed data. We also calculated a rough uncertainty in the  mean count by observing the size of our noise and dividing this by the square root of the number of bins present in the FW of the gaussian used for the convolution.
+The uncertainty in the bin position of the mean (peak position $\pm$ 8)is the same as the vertical uncertainty in figure 3 in the analysis.
+
+HOW DOES THE UNCERTAINTY PROPAGATION WORK???????????????????
 
 
+\begin{equation} u(\mu_{count}) = \frac{\sigma}{ \sqrt{N}},\\\therefore \frac{80}{ \sqrt{8}} \approx 30,
+\end{equation}
+\end{multicols}
 
+\newpage
 \section{Results}
-Parameters used in data acquisition
+Data acquisition parameters
 \begin{itemize}
     \item Laboratory temperature $T = 294.15 \pm 0.5 K$
     \item MCA threshold $ = 42$
     \item Acquisition time $t = 100s$
-    \item Background threshold $4$
+    \item Background threshold: $4$
 \end{itemize}
 
-% \begin{Figure}
-%  \centering
-%  \includegraphics[width=\linewidth]{}
-%  \captionof{figure}{}
-% \end{Figure}
+\begin{figure}[!htb]
+\subfloat[]{\scalebox{0.37}{
+\includegraphics{raw_p=5.17kPa.png}    
+}}
+\subfloat[]{\scalebox{0.37}{
+\includegraphics{raw_p=19.97kPa.png}   
+}}
+\subfloat[]{\scalebox{0.37}{
+\includegraphics{raw_p=30.07kPa.png}
+}}\\
+\subfloat[]{\scalebox{0.37}{
+\includegraphics{smooth_p=5.17kPa.png}
+}}
+\subfloat[]{\scalebox{0.37}{
+\includegraphics{smooth_p=19.97kPa.png}   
+}}
+\subfloat[]{\scalebox{0.37}{
+\includegraphics{smooth_p=30.07kPa.png}
+}}
+\caption{Example of unprocessed and processed spectra for alpha particle range. Spectra (a),(b),(c) are the raw data. Spectra (d),(e),(f) have been processed using gaussian smoothing. from this smoothed data we created a fit for the peak and the FWHM region. In addition to the data in the the smoothed spectra plots, we have included our extrapolation for the region below the noise threshold. It can be observed (from left to right) that as pressure increases the whole spectrum of the detected alpha particles moves towards the low energy region.
+All the spectra in this figure diplay the maximum count, and the bin corresponding to this maximum count in the top right corner of each plot
+pressure values 5.17 kPa, 19.97 kPa and 30.07 kPa respectively. }
+\end{figure}
 
-% \subsection{}
+\begin{SCfigure}
+\caption{
+ We found the bin location corresponding to zero energy using the background spectrum recorded with a threshold of 4 bins. 
+ We fit a gaussian to this spectrum and from our fit we find the zero energy point to be $10.21 \pm 0.04$.
+ }
+\includegraphics[width=0.5\textwidth]%
+    {background.png}%
+\end{SCfigure}
+
+\begin{SCfigure}
+\subfloat[]{\scalebox{0.6}{
+\includegraphics{peak_position_vs_pressure.png}
+}}
+\caption{
+We determined the pressure value $P_0$ corresponding to the absorption of alpha particles with the most probable energy by making a power-law fit of the 6 highest energy (smoothed data) peak values using the equation $y=(a+bp)^c$, where y is peak location, p is pressure. 
+Firstly, We subtract the zero energy bin $10.21 \pm 0.04$ from all the peaks positions used in the fit. From our fit we find the pressure value $P_0 = 37 \pm 1$.
+The fit parameter values are displayed in the figure. 
+}
+\end{SCfigure}
+
+\begin{figure}[!htb]
+\subfloat[]{\scalebox{0.6}{
+\includegraphics{raw_p=0.0kPa.png}    
+}}
+\subfloat[]{\scalebox{0.6}{
+\includegraphics{smooth_p=0.0kPa.png}   
+}}
+\caption{
+Using equation (6), we determine the alpha particle energy (as they are emitted from the source) to be $E_0 = 4.46 \pm 0.09$MeV. We compare the result to the energy emitted from \textsuperscript{241}Am $E = 5.4857$ MeV\cite{SPA}. The difference in these values is $1.03 \pm 0.09$.
+To determine the calibration factor for the MCA in terms of the energy, we use the bin corresponding to $E_0$ in the gaussian smoothed distribution in figure (b) and we subtract the zero point energy bin from this and simply calculate the calibration factor $1$bin$ = 5.1 \pm 0.1$keV
+}
+\end{figure}
 
 
+\newpage
+\begin{multicols}{2}
 \section{Discussion}
-The width of the energy peaks compared to the energy resolution of the detector requires us to consider the implications of changing the number of bins used.
-A smaller number of bins gives a higher count in each bin, which improves the signal to noise ratio in each bin because the uncertainty goes as the square root of the number of counts.
-A larger number of bins gives a higher resolution of the spectrum, and allowing us to find the centre more accurately, but the uncertainty in each bin height becomes bigger by the same reasoning as above.\cite{feedback}
-In the case of this experiment most of the spread in our spectra is likely due to the alpha particles travelling  through the gold layer that is part of the radioactive source construction. 
+The width of the energy peaks compared to the energy resolution of the detector requires us to consider the implications of changing the number of bins used. A smaller number of bins gives a higher count in each bin, which improves the signal to noise ratio in each bin because the uncertainty goes as the square root of the number of counts.
+A larger number of bins gives a higher resolution of the spectrum, allowing us to find the centre more accurately, but the uncertainty in each bin height becomes bigger by the same reasoning as above.\cite{feedback}
+In the case of this experiment most of the spread in our spectra is likely due to the alpha particles travelling through the gold layer that is part of the radioactive source construction. 
+
+In task 1 of our analysis we were unable to determine a way to fit the peaks of our spectra to equation (10). We attempted to make the value of $E_0$ as a fit variable. But we did not manage to obtain a way to convert from bin units to Energy units at this stage.
 
 
 \section{Conclusion}
@@ -203,3 +268,4 @@ In the case of this experiment most of the spread in our spectra is likely due t
 
 % \begin{equation} ,
 % \end{equation}
+

@@ -69,6 +69,7 @@ def KFe_spectrum_fitting(E, data_KFe):
     pars, pcov = scipy.optimize.curve_fit(not_a_Lorentzian, E, data_KFe, p0=initial_guess)
     perr = np.sqrt(np.diag(pcov))
     fit = not_a_Lorentzian(E, *pars)
+    # print(f"\n{pars=}\n{perr=}")
     # return fit parameters
     return pars, fit
 
@@ -79,7 +80,7 @@ def αFe_spectrum_fitting(E, data_αFe):
     pars_6, pcov = scipy.optimize.curve_fit(not_6_Lorentzians, E, data_αFe, p0=initial_guess)
     perr = np.sqrt(np.diag(pcov))
     fit_6 = not_6_Lorentzians(E, *pars_6)
-    print(f"\n{pars_6=}\n{perr=}")
+    # print(f"\n{pars_6=}\n{perr=}")
     # return fit parameters
     return pars_6, fit_6
 
@@ -91,4 +92,4 @@ pars, fit = KFe_spectrum_fitting(E, data_KFe)
 pars_6, fit_6 = αFe_spectrum_fitting(E, data_αFe)
 # plot_data(E, data_αFe, fit_6)
 
-
+print(f"E = {((hbar*2*np.pi)*8.3333*1e8/eV)=}eV ")

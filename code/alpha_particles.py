@@ -27,9 +27,6 @@ eV = 1.602e-19 # [J]
 MeV = eV * 1e6 # [J]
 keV = eV * 1e3 # [J]
 
-p_zero = 36.1 * kilo # [Pa]
-u_p_zero = 0.5 * kilo
-
 A_air = 14.5924
 A_Au = 196.966570
 
@@ -222,22 +219,22 @@ def Task_1(p_values, max_positions):
     u_P_0 = propagate_uncertainty(find_P_0, pars, pcov)
 
     print(f"{P_0 =:.1f} ± {u_P_0:.1f}")
-    plt.errorbar(p_values[:7], max_positions[:7],
-        xerr=0.5,yerr=10,color='tomato', 
-        marker='None',linestyle='None', label="peak"
-    )
-    plt.plot(p_values[:7], fit, color='orange', label="fit")
-    plt.ylabel('Bins')
-    plt.xlabel('pressure / kPa')
-    text= plt.figtext(
-        0.74,
-        0.63,
-        f"fit parameters:\na ={pars[0]:.0f} ± {perr[0]:.0f}\nb ={pars[1]:.1f} ± {perr[1]:.1f}\nc ={pars[2]:.2f} ± {perr[2]:.2f}\nP0 = {P_0:.1f} ± {u_P_0:.1f}",
-        fontsize='x-small',
-    )
-    text.set_bbox(dict(facecolor='white', alpha=0.8, linewidth=0.1))
-    plt.legend()
-    spa.savefig(f'peak_position_vs_pressure.png')
+    # plt.errorbar(p_values[:7], max_positions[:7],
+    #     xerr=0.5,yerr=10,color='tomato', 
+    #     marker='None',linestyle='None', label="peak"
+    # )
+    # plt.plot(p_values[:7], fit, color='orange', label="fit")
+    # plt.ylabel('Bins')
+    # plt.xlabel('pressure / kPa')
+    # text= plt.figtext(
+    #     0.74,
+    #     0.63,
+    #     f"fit parameters:\na ={pars[0]:.0f} ± {perr[0]:.0f}\nb ={pars[1]:.1f} ± {perr[1]:.1f}\nc ={pars[2]:.2f} ± {perr[2]:.2f}\nP0 = {P_0:.1f} ± {u_P_0:.1f}",
+    #     fontsize='x-small',
+    # )
+    # text.set_bbox(dict(facecolor='white', alpha=0.8, linewidth=0.1))
+    # plt.legend()
+    # spa.savefig(f'peak_position_vs_pressure.png')
     # plt.show()
     return P_0, u_P_0
 
@@ -272,19 +269,23 @@ def Task_3(E_0, u_E_0, rho_atm, rho_gold, A_Au, A_air, alpha_energy):
     # equation (4)
     R_atm = 0.186 * E_0**1.73
     u_R_atm = R_atm * 1.73* u_E_0 / E_0
-    # print(f"\nTheoretical Range in 1 atm: {R_atm = :.2f} ± {u_R_atm:.2f} cm")
+    print(f"\nTheoretical Range in 1 atm: {R_atm = :.2f} ± {u_R_atm:.2f} cm")
 
     # Calculating anticipated range for particles travelling through gold
     # equation (13)
     R_Au = R_atm * (rho_atm / rho_gold) * np.sqrt(A_Au / A_air)
     u_R_Au = R_Au * (u_R_atm / R_atm)
-    # print(f"{R_Au = } ± {u_R_Au} cm")
+    print(f"R_Au = {R_Au * 1e4:.2f} ± {u_R_Au * 1e4:.2f} μm")
 
     # Calculating the thickness (delta_x) of the gold coating
     # rearranged equation (14)
-    delta_x = np.sqrt(A_Au) * (E_0**1.73 -alpha_energy**(1/0.578))  / (4.464 * rho_gold * np.sqrt(A_air))
-    u_delta_x = 1.73 * u_E_0 / E_0
-    # print(f"\n{delta_x = } ± {u_delta_x} cm")
+    delta_x = np.sqrt(A_Au) * (E_0**1.73 - alpha_energy**(1/0.578))  / (-4.464 * rho_gold * np.sqrt(A_air))
+    u_delta_x = (1.73 * u_E_0 / E_0) * delta_x
+    print(f"\ndelta_x = {delta_x * 1e4:.2f} ± {u_delta_x * 1e4:.2f} μm")
+        # difference in energy 
+    diff = abs(3 * 1e-4 - delta_x)
+    u_diff = abs(u_delta_x)
+    print(f"\ndiff = {diff * 1e4:.2f} ± {u_diff* 1e4:.2f} μm")
     return R_atm, u_R_atm, R_Au, u_R_Au, delta_x, u_delta_x
 
 
@@ -305,21 +306,21 @@ def Task_4(E_0, u_E_0, R_atm, u_R_atm):
         )
     plt.xlabel(r'$E_0$ / MeV')
     plt.ylabel('R / cm')
-    plt.title(r'Theoretical plot of R vs $E_0$ of alpha particles in air')
+    # plt.title(r'Theoretical plot of R vs $E_0$ of alpha particles in air'))
     plt.legend()
     spa.savefig(f'theoretical_R_vs_E.png')
     # plt.show()
 
 def Task_5(peak_widths, p_values):
     # plot of FWHM vs pressure
-    plt.plot(
-        p_values, peak_widths, 'o', color='tomato', markersize=2.5, label=r"$FWHM(p)$"
-        )
-    plt.axvline(x=p_zero/kilo, linestyle='--', alpha=0.5, label="37 kPa" )
+    plt.errorbar(p_values[:15], peak_widths[:15],
+        xerr=0.5,yerr=0.7,color='tomato', 
+        marker='None',linestyle='None', label=r"$FWHM(p)$"
+    )
+    plt.axvline(x=P_0, linestyle='--', color='teal' alpha=0.5, label="37.1 ± 1.1 kPa" )
     plt.grid(linestyle=':')
     plt.xlabel(r'$p$ / kPa')
     plt.ylabel('FWHM')
-    plt.title(r'Width of energy spectra vs pressure')
     plt.legend()
     spa.savefig(f'FWHM_vs_pressure.png')
     # plt.show()
@@ -423,11 +424,11 @@ R_0, u_R_0, E_0, u_E_0 = Task_2(x_0, u_x_0, P_0, u_P_0)
 
 E, u_E = calibrate_axis(x, E_0, u_E_0)
 
-# R_atm, u_R_atm, R_Au, u_R_Au, delta_x, u_delta_x = Task_3(E_0, u_E_0, rho_atm, rho_gold, A_Au, A_air, alpha_energy)
+R_atm, u_R_atm, R_Au, u_R_Au, delta_x, u_delta_x = Task_3(E_0, u_E_0, rho_atm, rho_gold, A_Au, A_air, alpha_energy)
 
 # Task_4(E_0, u_E_0, R_atm, u_R_atm)
 
-# Task_5(peak_widths, p_values)
+Task_5(peak_widths, p_values)
 
 # Task_6(total_events)
 
@@ -439,5 +440,4 @@ E, u_E = calibrate_axis(x, E_0, u_E_0)
 # print(f"\n{pα = :.1f} ± {u_pα:.1f} kPa")
 
 # compare(p_R, pα, u_p_R, u_pα, p_0, u_p_0)
-
 

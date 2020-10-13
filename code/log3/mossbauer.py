@@ -84,6 +84,11 @@ def αFe_spectrum_fitting(E, data_αFe):
     # return fit parameters
     return pars_6, fit_6
 
+def Energy_lines(pars):
+    for i in pars_6
+        if i>=1:
+        plt.axvline(pars_6[])
+
 #*~ function calls ~*#
 data_KFe, data_αFe = read_files()
 pars, fit = KFe_spectrum_fitting(E, data_KFe)
@@ -92,4 +97,4 @@ pars, fit = KFe_spectrum_fitting(E, data_KFe)
 pars_6, fit_6 = αFe_spectrum_fitting(E, data_αFe)
 # plot_data(E, data_αFe, fit_6)
 
-print(f"E = {((hbar*2*np.pi)*8.3333*1e8/eV)=}eV ")
+# print(f"{}")

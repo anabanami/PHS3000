@@ -15,11 +15,10 @@ mathematica
     [] wk6: distribution functions
     [x] wk7: uncertainty analysis
     [x] wk8: data rejection and fitting
+    [x] wk9: model testing
+    [x] wk10: EQUIPMENT TESTS theory and practice
+    [x] wk11: computational discrete FT
 
-    [] wk9: model testing
-    
-    [] wk10: EQUIPMENT TESTS theory and practice
-    [] wk11: computational discrete FT
     [] wk12: phase-locked detection methods
     
 -LABORATORY-
@@ -47,7 +46,7 @@ LABWORK DURING LOCKDOWN:
 
 Mossbauer effect
     [x] logbook 16 October, 11am
-    [] report 8 November, 11pm (optional)
+    [] report 8 November, 11pm
 
 
 Magnetic suceptibility

@@ -4,7 +4,7 @@
 set -o errexit
 
 
-TEXFILE=report_log2
+TEXFILE=report3
 
 rm -f *.aux *.bbl *.blg *.log
 

@@ -7,6 +7,7 @@ import monashspa.PHS3000 as spa
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.optimize
+from physunits import *
 
 plt.rcParams['figure.dpi'] = 150
 # folder = Path('spectra')
@@ -14,7 +15,7 @@ plt.rcParams['figure.dpi'] = 150
 
 # Globals
 E = np.linspace(1, 512,512)
-C_0 = 255.5
+C_0 = 256.5
 u_C_0 = 0.05
 
 hbar = 1.0545718e-34 # [Js]
@@ -68,7 +69,7 @@ def plot_data(E, data_file, fit, C_KFCN, C_αFe, αFe=False):
     plt.xlabel('Bins')
     plt.ylabel('Counts')
     plt.legend()
-    plt.show()
+    # plt.show()
 
 def not_a_Lorentzian(E, B, A, E_0, Γ):
     return B - (A * (Γ / 2)**2 /((E - E_0)**2 + (Γ / 2)**2))
@@ -125,9 +126,9 @@ def energy_differences(pars_6, perr_6):
     mean_lambda = np.mean([lambda_1, lambda_2, lambda_3, lambda_4])
     u_mean_lambda = (1 / 4) * np.sqrt(0.04**2 + 0.06**2 + 0.04**2 + 0.06**2)
 
-    return LAMBDA_1, u_LAMBDA_1, mean_lambda, u_mean_lambda, E_0i, u_E_0i
+    return LAMBDA_1, u_LAMBDA_1, LAMBDA_2, u_LAMBDA_2, mean_lambda, u_mean_lambda, E_0i, u_E_0i
 
-def Q8(LAMBDA_1, u_LAMBDA_1, mean_lambda, u_mean_lambda):
+def Q8(LAMBDA_1, u_LAMBDA_1, LAMBDA_2, u_LAMBDA_2, mean_lambda, u_mean_lambda):
     # g value for ground state
     g_g = μ_g / (μ_N * I_g)
     u_g_g = np.sqrt((u_μ_g / μ_g)**2 + (u_μ_N / μ_N)**2) * g_g
@@ -144,64 +145,75 @@ def Q8(LAMBDA_1, u_LAMBDA_1, mean_lambda, u_mean_lambda):
 
     v = (LAMBDA_g * c) / E𝛾
     u_v = np.sqrt((u_LAMBDA_g / LAMBDA_g)**2 + (u_E𝛾 / E𝛾)**2) * v
-    print(f"\n v = ({v * 1e3:.2f} ± {u_v * 1e3:.2f}) mm/s")
+    print(f"\nv = ({v * 1e3:.2f} ± {u_v * 1e3:.2f}) mm/s")
 
-    K_18 = v / LAMBDA_1
+    mean_LAMBDA = (LAMBDA_1 + LAMBDA_2) / 2
+    u_mean_LAMBDA = np.sqrt((u_LAMBDA_1)**2 + (u_LAMBDA_2)**2) / 2
+    print(f"\n{mean_LAMBDA = :.2f} ± {u_mean_LAMBDA:.2f}")
+    K_18 = v / mean_LAMBDA
     u_K_18 =  np.sqrt((u_v / v)**2 + (u_LAMBDA_1 / LAMBDA_1)**2) * K_18
-    print(f"\nK_18 = ({K_18 * 1e3:.4f} ± {u_K_18 * 1e3:.4f}) mm/s/channel")
+    print(f"K_18 = ({K_18 * 1e3:.4f} ± {u_K_18 * 1e3:.4f}) mm/s/channel")
 
     v_mean_lambda = mean_lambda * K_18
     u_v_mean_lambda = np.sqrt((u_mean_lambda / mean_lambda)**2 + (u_K_18 / K_18)**2) * v_mean_lambda
     print(f"\nv_mean_lambda = ({v_mean_lambda * 1e3:.3f} ± {u_v_mean_lambda * 1e3:.3f}) mm/s")
 
-    Delta_E = ((E𝛾 / keV)* v_mean_lambda) / c
+    Delta_E = (E𝛾 * v_mean_lambda) / c
     u_Delta_E = np.sqrt((u_E𝛾 / E𝛾)**2 + (u_v_mean_lambda/ v_mean_lambda)**2) * Delta_E
-    print(f"\nDelta_E = ({Delta_E * keV * 1e26:.3f} ± {u_Delta_E * keV * 1e26:.3f}) * 1e-26 J")
+    print(f"\nDelta_E = ({Delta_E * 1e26:.3f} ± {u_Delta_E * 1e26:.3f}) * 1e-26 J")
     
-    g_e = Delta_E * keV / (μ_N * B)
-    u_g_e = np.sqrt((u_Delta_E / Delta_E)**2 + (u_μ_N / μ_N)**2 + + (u_B / B)**2) * g_e
-    print(f"\ng_e = ({g_e:.4f} ± {u_g_e:.4f}) ")
+    # this should be negative since moment is negative
+    g_e = -Delta_E / (μ_N * B)
+    u_g_e = np.sqrt((u_Delta_E / Delta_E)**2 + (u_μ_N / μ_N)**2 + (u_B / B)**2) * g_e
+    print(f"\ng_e = ({g_e:.4f} ± {u_g_e:.4f})\n")
 
     μ_e = g_e * μ_N * (3 / 2)
     u_μ_e = np.sqrt((u_g_e/ g_e)**2 + (u_μ_N / μ_N)**2) * μ_e
-    print(f"\nμ_e = ({μ_e * 1e28:.2f} ± {u_μ_e * 1e28:.2f}) J/T")
-    print(f"\nμ_e = ({μ_e / μ_N:.4f} ± {u_μ_e / μ_N:.4f}) μ_N")
+    print(f"μ_e = ({μ_e * 1e28:.2f} ± {u_μ_e * 1e28:.2f}) J/T\n")
+    print(f"μ_e = ({μ_e / μ_N:.4f} ± {u_μ_e / μ_N:.4f}) μ_N")
     return K_18, u_K_18
 
-
 def Q9(pars, perr, K_18, u_K18):
+    # K_18 #[m]
     v_αFe = 711 * 1e-3 #[V]
     u_v_αFe = 2 * 1e-3 #[V]
     v_KFCN = 160 * 1e-3 #[V]
     u_v_KFCN = 1 * 1e-3 #[V]
 
-    K_04 = v_αFe * K_18 / v_KFCN
-    u_K_04 = np.sqrt((u_v_αFe / v_αFe)**2 + (u_K_18 / K_18)**2 +(u_v_KFCN / v_KFCN)**2) * K_04
+    # print(f"{K_18 = }, {v_KFCN = }, {u_v_αFe = }")
 
-    print(f"\nK_04 = ({K_04 * 1e4:.2f} ± {u_K_04 * 1e4:.2f}) * 1e-4 mm/s/channel")
+    K_04 = v_KFCN * K_18 / v_αFe
+    # K_04 = v_KFCN * K_18 / v_αFe #wrong ratio
+    u_K_04 = np.sqrt((u_v_αFe / v_αFe)**2 + (u_K_18 / K_18)**2 +(u_v_KFCN / v_KFCN)**2) * K_04
+    print(f"\nK_04 = ({K_04 * 1e3:.5f} ± {u_K_04 * 1e3:.5f}) mm/s/channel")
+
     GAMMA_v = K_04 * pars[3]
     u_GAMMA_v = np.sqrt((u_K_04 / K_04)**2 +(perr[3] / pars[3])**2) * GAMMA_v
-    print(f"\nGAMMA_v = ({GAMMA_v * 1e3:.2f} ± {u_GAMMA_v * 1e3:.2f}) * 1e-3 mm/s")
-    v_Q_1 = (7.479 * 1e-28 * c) / E𝛾
-    print(f"\nv_Q_1 = {v_Q_1 * 1e3:.1f} mm/s")
+    print(f"\nGAMMA_v = ({GAMMA_v * 1e3:.3f} ± {u_GAMMA_v * 1e3:.3f}) mm/s")
+
+    upper_Delta_E = 7.479 * 1e-28 * J 
+    # print(f" E𝛾 in Joules {E𝛾 = }")
+    v_Q_1 = (upper_Delta_E * c) / E𝛾
+    print(f"\nv_Q_1 = {v_Q_1 * 1e3:.3f} mm/s")
 
     convolv_v_Q1 = v_Q_1 * 2.3
-    print(f"\nconvolv_v_Q1 = {convolv_v_Q1 * 1e3:.1f} mm/s")
+    print(f"\nconvolv_v_Q1 = {convolv_v_Q1 * 1e3:.3f} mm/s")
 
     return K_04, u_K_04
 
 def Q10(pars,perr, pars_6, perr_6, K_04, u_K_04, K_18, u_K_18, E_0i, u_E_0i):
     C_KFCN = pars[2]
     u_C_KFCN = perr[2]
-    print(f"\nC_KFCN = ({C_KFCN:.3f} ± {u_C_KFCN:.3f})")
+    print(f"\nC_0 = ({C_0:.2f} ± {u_C_0:.2f})")
+    print(f"\nC_KFCN = ({C_KFCN:.2f} ± {u_C_KFCN:.2f})")
 
     C_KFCN_C0 = C_KFCN - C_0
     u_C_KFCN_C0 = np.sqrt(u_C_KFCN**2 + u_C_0**2)
-    print(f"\n{C_KFCN_C0 = :.1f} ± {u_C_KFCN_C0 = :.1f}")
+    print(f"\n{C_KFCN_C0 = :.2f} ± {u_C_KFCN_C0:.2f}")
     
     IS_KFCN = C_KFCN_C0 * K_04
     u_IS_KFCN = np.sqrt((u_C_KFCN_C0/ C_KFCN_C0)**2 + (u_K_04 / K_04)**2) * IS_KFCN
-    print(f"\nIS_KFCN = ({IS_KFCN * 1e3:.2f} ± {u_IS_KFCN * 1e3:.2f}) mm/s")
+    print(f"\nIS_KFCN = ({IS_KFCN * 1e3:.4f} ± {u_IS_KFCN* 1e3:.4f}) mm/s")
 
 
     C_αFe = np.mean(E_0i)
@@ -210,16 +222,25 @@ def Q10(pars,perr, pars_6, perr_6, K_04, u_K_04, K_18, u_K_18, E_0i, u_E_0i):
 
     C_αFe_C0 = C_αFe - C_0
     u_C_αFe_C0 = np.sqrt(u_C_αFe**2 + u_C_0**2)
-    print(f"\nC_αFe_C0 = {C_αFe_C0:.2f} ± {u_C_αFe_C0:.2f}")
+    # print(f"\nC_αFe_C0 = {C_αFe_C0:.2f} ± {u_C_αFe_C0:.2f}")
 
+    # print(f"{K_18 = }, {C_αFe = }, {C_0 = }")
     IS_αFe = C_αFe_C0 * K_18
-
     u_IS_αFe = np.sqrt((u_C_αFe_C0 / C_αFe_C0)**2 + (u_K_18 / K_18)**2) * IS_αFe
     print(f"\nIS_αFe = ({IS_αFe * 1e3:.4f} ± {u_IS_αFe * 1e3:.4f}) mm/s")
 
-    diff = IS_KFCN - IS_αFe
-    u_diff = np.sqrt(u_IS_KFCN**2 + u_IS_αFe**2)
-    print(f"\ndiff = ({diff * 1e3:.2f} ± {u_diff * 1e3:.2f}) mm/s")
+    IS_rel = IS_KFCN - IS_αFe
+    u_IS_rel = np.sqrt(u_IS_KFCN**2 + u_IS_αFe**2)
+    print(f"\nIS_rel = ({IS_rel * 1e3:.3f} ± {u_IS_rel * 1e3:.3f}) mm/s")
+
+    IS_cash = -0.035e-3 # [m]
+    u_IS_cash = 0.007e-3 # [m]
+    diff = IS_rel - IS_cash
+    u_diff = np.sqrt(u_IS_rel**2 + u_IS_cash**2)
+    print(f"\ndiff = {diff*1e3:.3f} ± {u_diff*1e3:.3f}mm/s")
+
+    sigmas = diff / u_diff
+    print(f"sigmas away from Cashion's result: {sigmas}")
 
     return C_KFCN, u_C_KFCN, C_αFe, u_C_αFe
 
@@ -234,9 +255,9 @@ pars, perr, fit = KFe_spectrum_fitting(E, data_KFe)
 
 pars_6, perr_6, fit_6 = αFe_spectrum_fitting(E, data_αFe)
 
-LAMBDA_1, u_LAMBDA_1, mean_lambda, u_mean_lambda, E_0i, u_E_0i = energy_differences(pars_6, perr_6)
+LAMBDA_1, u_LAMBDA_1, LAMBDA_2, u_LAMBDA_2, mean_lambda, u_mean_lambda, E_0i, u_E_0i = energy_differences(pars_6, perr_6)
 
-K_18, u_K_18 = Q8(LAMBDA_1, u_LAMBDA_1, mean_lambda, u_mean_lambda)
+K_18, u_K_18 = Q8(LAMBDA_1, u_LAMBDA_1, LAMBDA_2, u_LAMBDA_2, mean_lambda, u_mean_lambda)
 
 K_04, u_K_04 = Q9(pars, perr, K_18, u_K_18)
 

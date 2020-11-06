@@ -13,14 +13,13 @@ Laboratory: semester 2 third year (2020)
 #### Range of alpha particles in air
         -
     [x] logbook
-    [ ] report
+    [x] report
 
 #### Mossbauer spectroscopy
         -
-    [ ] logbook
-    [ ] report
+    [x] logbook
+    [x] report
 
-#### blehg
+#### Magnetic susceptibility
         -
-    [ ] logbook
-    [ ] report
+    [x] logbook
